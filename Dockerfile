@@ -11,4 +11,6 @@ LABEL version="0.1.0" \
   "com.github.actions.color"="green"
 
 COPY entrypoint.sh LICENSE README.md /
+RUN chmod a+x entrypoint.sh
+
 ENTRYPOINT [ "/entrypoint.sh" ]
