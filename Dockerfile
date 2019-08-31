@@ -6,7 +6,7 @@ LABEL version="0.1.0" \
   homepage="https://github.com/crazy-max/ghaction-github-pages" \
   maintainer="CrazyMax" \
   "com.github.actions.name"="GitHub Pages" \
-  "com.github.actions.description"="Github Action for deploying Github Pages" \
+  "com.github.actions.description"="GitHub Action for deploying GitHub Pages" \
   "com.github.actions.icon"="package" \
   "com.github.actions.color"="green"
 
