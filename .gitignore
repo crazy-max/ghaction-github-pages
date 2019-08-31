@@ -1,3 +1,5 @@
 # Jetbrains
 /.idea
 /*.iml
+
+/public
