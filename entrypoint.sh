@@ -1,26 +1,20 @@
 #!/bin/sh
 set -e
 
-BUILD_DIR=$1
+TARGET_BRANCH=$1
+BUILD_DIR=$2
+
+if [ -z "$TARGET_BRANCH" ]; then
+  echo "⛔️ Target branch not defined"
+  exit 1
+fi
 if [ ! -d "$BUILD_DIR" ]; then
   echo "⛔️ Build dir does not exist"
   exit 1
 fi
-echo "cd $BUILD_DIR"
+
+echo "🏃 Deploying $BUILD_DIR directory to $TARGET_BRANCH branch"
 cd "$BUILD_DIR"
-
-REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-OWNER="$(echo $GITHUB_REPOSITORY | cut -d'/' -f 1)"
-REPONAME="$(echo $GITHUB_REPOSITORY | cut -d'/' -f 2)"
-PAGES_REPO="${OWNER}.github.io"
-
-if [[ "$REPONAME" == "$PAGES_REPO" ]]; then
-  TARGET_BRANCH="master"
-else
-  TARGET_BRANCH="gh-pages"
-fi
-
-: "${REMOTE_BRANCH:=$TARGET_BRANCH}"
 
 git init
 git config user.name "${GITHUB_ACTOR}"
@@ -35,7 +29,7 @@ git remote rm origin || true
 git remote add origin "${REPO}"
 git add .
 git commit --allow-empty -m 'Deploy to GitHub pages'
-git push --force --quiet "$REPO" $REMOTE_BRANCH
+git push --force --quiet "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$TARGET_BRANCH"
 rm -rf .git
 
 cd "$GITHUB_WORKSPACE"
