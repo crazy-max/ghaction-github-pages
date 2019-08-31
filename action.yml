@@ -1,0 +1,20 @@
+# https://help.github.com/en/articles/metadata-syntax-for-github-actions
+name: 'GitHub Pages'
+description: 'GitHub Action for deploying GitHub Pages'
+author: 'crazy-max'
+branding:
+  color: 'green'
+  icon: 'git-branch'
+
+inputs:
+  build_dir:
+    description: 'Path to build directory to deploy'
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.build_dir }}
+  env:
+    GITHUB_TOKEN: 'As provided by GitHub Actions'
