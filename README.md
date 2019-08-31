@@ -40,8 +40,10 @@ jobs:
           EOL
       -
         name: Deploy
+        if: success()
         uses: crazy-max/ghaction-github-pages@master
         with:
+          target_branch: gh-pages
           build_dir: public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -51,11 +53,12 @@ jobs:
 
 ### inputs
 
-The following are **required** as `step.with` keys
+Following inputs can be used as `step.with` keys
 
-| Name        | Type    | Description                                                     |
-|-------------|---------|-----------------------------------------------------------------|
-| `build_dir` | String  | Path to build directory to deploy                               |
+| Name            | Type    | Description                                                     |
+|-----------------|---------|-----------------------------------------------------------------|
+| `target_branch` | String  | Git branch where assets will be deployed (default `gh-pages`)   |
+| `build_dir`     | String  | Path to build directory to deploy                               |
 
 ### environment variables
 
