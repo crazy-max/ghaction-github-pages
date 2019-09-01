@@ -65,11 +65,27 @@ Following inputs can be used as `step.with` keys
 
 ### environment variables
 
-The following are *required* as `step.env` keys
+Following environment variables can be used as `step.env` keys
 
 | Name           | Description                          |
 |----------------|--------------------------------------|
 | `GITHUB_TOKEN` | GITHUB_TOKEN as provided by `secrets`|
+| `GITHUB_PAT`   | [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) (see Limitation section below)|
+
+## :warning: Limitation
+
+Currently, `GITHUB_TOKEN` does not suffice to trigger a page build on a **public repository** (propagate content to the GitHub content-delivery network). You must therefore create a custom [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and use it through the `GITHUB_PAT` environment variable:
+
+```yaml
+- name: Deploy
+  if: success()
+  uses: crazy-max/ghaction-github-pages@master
+  with:
+    target_branch: gh-pages
+    build_dir: public
+  env:
+    GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+```
 
 ## 🤝 How can I help ?
 

@@ -21,7 +21,7 @@ git config user.name "${GITHUB_ACTOR}"
 git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 git add .
 git commit --allow-empty -m 'Deploy to GitHub pages'
-git push --force --quiet "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "master:$TARGET_BRANCH"
+git push --force --quiet https://${GITHUB_PAT:-"x-access-token:$GITHUB_TOKEN"}@github.com/${GITHUB_REPOSITORY}.git master:$TARGET_BRANCH
 rm -rf .git
 
 cd "$GITHUB_WORKSPACE"
