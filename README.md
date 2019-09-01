@@ -94,7 +94,7 @@ The most basic way to show your support is to star :star2: the project, or to ra
 But we're not gonna lie to each other, I'd rather you buy me a beer or two :beers:!
 
 [![Support me on Patreon](.res/patreon.png)](https://www.patreon.com/crazymax) 
-[![Paypal Donate](.res/paypal-donate.png)](https://www.paypal.me/crazyws)
+[![Paypal Donate](.res/paypal.png)](https://www.paypal.me/crazyws)
 
 ## 📝 License
 
