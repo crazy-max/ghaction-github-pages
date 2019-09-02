@@ -52,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-Docker :whale: image is also provided and automatically updated within [Docker Hub](https://hub.docker.com/r/crazymax/ghaction-github-pages/tags) so you can directly use the following [DockerHub action](https://help.github.com/en/articles/workflow-syntax-for-github-actions#example-using-a-docker-hub-action):
+Docker :whale: image is also provided and automatically updated within [Docker Hub](https://hub.docker.com/r/crazymax/ghaction-github-pages/tags) so you can directly use the following [Docker Hub action](https://help.github.com/en/articles/workflow-syntax-for-github-actions#example-using-a-docker-hub-action):
 
 ```yaml
 - name: Deploy
