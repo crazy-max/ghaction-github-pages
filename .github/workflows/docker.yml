@@ -27,7 +27,7 @@ jobs:
         run: |
           docker build \
             --build-arg "VERSION=${TAG_NAME}" \
-            --tag "crazymax/ghaction-github-pages:${TAG_NAME}" \
+            --tag "crazymax/ghaction-github-pages:${TAG_NAME:-snapshot}" \
             --tag "crazymax/ghaction-github-pages:latest" \
             --file Dockerfile .
       -
