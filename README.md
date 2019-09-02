@@ -52,6 +52,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+Docker :whale: image is also provided and automatically updated within [Docker Hub](https://hub.docker.com/u/crazymax/ghaction-github-pages) so you can directly use the following [DockerHub action](https://help.github.com/en/articles/workflow-syntax-for-github-actions#example-using-a-docker-hub-action):
+
+```yaml
+- name: Deploy
+  if: success()
+  uses: docker://crazymax/ghaction-github-pages
+  with:
+    target_branch: gh-pages
+    build_dir: public
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
 ## 💅 Customizing
 
 ### inputs
