@@ -58,10 +58,9 @@ Docker :whale: image is also provided and automatically updated within [Docker H
 - name: Deploy
   if: success()
   uses: docker://crazymax/ghaction-github-pages
-  with:
-    target_branch: gh-pages
-    build_dir: public
   env:
+    INPUT_TARGET_BRANCH: gh-pages
+    INPUT_BUILD_DIR: public
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
