@@ -12,7 +12,7 @@ A GitHub Action for deploying GitHub Pages
 
 ## 🚀 Usage
 
-Below is a simple to deploy to GitHub Pages. A [live example](https://github.com/crazy-max/ghaction-github-pages/actions) is also available for this repository.
+Below is a simple snippet to deploy to GitHub Pages. A [live example](https://github.com/crazy-max/ghaction-github-pages/actions) is also available for this repository.
 
 ```yaml
 name: website
