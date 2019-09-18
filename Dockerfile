@@ -12,6 +12,9 @@ LABEL version="$VERSION" \
   "com.github.actions.icon"="upload-cloud" \
   "com.github.actions.color"="green"
 
+RUN apk --update --no-cache add curl \
+  && rm -rf /var/cache/apk/* /tmp/*
+
 COPY LICENSE README.md /
 ADD entrypoint.sh /
 ENTRYPOINT [ "/entrypoint.sh" ]

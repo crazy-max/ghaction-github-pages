@@ -18,8 +18,5 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.target_branch }}
-    - ${{ inputs.build_dir }}
   env:
     GITHUB_TOKEN: 'As provided by GitHub Actions'
