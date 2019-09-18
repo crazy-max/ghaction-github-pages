@@ -21,7 +21,9 @@ git commit --allow-empty -m 'Deploy to GitHub pages'
 git push --force --quiet https://${GITHUB_PAT:-"x-access-token:$GITHUB_TOKEN"}@github.com/${GITHUB_REPOSITORY}.git master:${INPUT_TARGET_BRANCH}
 rm -rf .git
 
-curl -XPOST -H"Authorization: token ${GITHUB_TOKEN}" -H"Accept: application/vnd.github.mister-fantastic-preview+json" https://api.github.com/repos/${GITHUB_REPOSITORY}/pages/builds
+# Tried https://developer.github.com/v3/repos/pages/#request-a-page-build
+# but not working: { "message": "Resource not accessible by integration", "documentation_url": "https://developer.github.com/v3/repos/pages/#request-a-page-build" }
+# curl -XPOST -H"Authorization: token ${GITHUB_TOKEN}" -H"Accept: application/vnd.github.mister-fantastic-preview+json" https://api.github.com/repos/${GITHUB_REPOSITORY}/pages/builds
 
 cd "$GITHUB_WORKSPACE"
 echo "🎉 Content of $INPUT_BUILD_DIR has been deployed to GitHub Pages."
