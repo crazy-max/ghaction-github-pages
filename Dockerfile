@@ -1,4 +1,4 @@
-FROM alpine/git:latest
+FROM alpine:latest
 
 ARG VERSION
 
@@ -12,7 +12,9 @@ LABEL version="$VERSION" \
   "com.github.actions.icon"="upload-cloud" \
   "com.github.actions.color"="green"
 
-RUN apk --update --no-cache add curl \
+RUN apk --update --no-cache add \
+    curl \
+    git \
   && rm -rf /var/cache/apk/* /tmp/*
 
 COPY LICENSE README.md /
