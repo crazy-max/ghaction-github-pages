@@ -70,10 +70,11 @@ Docker :whale: image is also provided and automatically updated within [Docker H
 
 Following inputs can be used as `step.with` keys
 
-| Name            | Type    | Description                                                     |
-|-----------------|---------|-----------------------------------------------------------------|
-| `target_branch` | String  | Git branch where assets will be deployed (default `gh-pages`)   |
-| `build_dir`     | String  | Path to build directory to deploy                               |
+| Name            | Type    | Description                                                                             |
+|-----------------|---------|-----------------------------------------------------------------------------------------|
+| `repo`          | String  | GitHub repository where assets will be deployed. Example: portapps/portapps.github.io   |
+| `target_branch` | String  | Git branch where assets will be deployed (default `gh-pages`)                           |
+| `build_dir`     | String  | Path to build directory to deploy                                                       |
 
 ### environment variables
 

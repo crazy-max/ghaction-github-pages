@@ -7,9 +7,10 @@ branding:
   icon: 'upload-cloud'
 
 inputs:
+  repo:
+    description: 'GitHub repository where assets will be deployed. Example: portapps/portapps.github.io'
   target_branch:
     description: 'Git branch where assets will be deployed'
-    required: false
     default: 'gh-pages'
   build_dir:
     description: 'Path to build directory to deploy'

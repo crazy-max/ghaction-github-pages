@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+REPO=${INPUT_REPO:-$GITHUB_REPOSITORY}
+
 if [ -z "$INPUT_TARGET_BRANCH" ]; then
   echo "⛔️ Target branch not defined"
   exit 1
@@ -18,7 +20,7 @@ git config user.name "${GITHUB_ACTOR}"
 git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 git add .
 git commit --allow-empty -m 'Deploy to GitHub pages'
-git push --force --quiet https://${GITHUB_PAT:-"x-access-token:$GITHUB_TOKEN"}@github.com/${GITHUB_REPOSITORY}.git master:${INPUT_TARGET_BRANCH}
+git push --force --quiet "https://${GITHUB_PAT:-"x-access-token:$GITHUB_TOKEN"}@github.com/${REPO}.git" "master:${INPUT_TARGET_BRANCH}"
 rm -rf .git
 
 # Tried https://developer.github.com/v3/repos/pages/#request-a-page-build
