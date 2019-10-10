@@ -46,19 +46,18 @@ async function run() {
 
     let gitURL = String('https://');
     if (process.env['GITHUB_PAT']) {
-      gitURL.concat(process.env['GITHUB_PAT']);
+      gitURL = gitURL.concat(process.env['GITHUB_PAT']);
     } else if (process.env['GITHUB_TOKEN']) {
-      gitURL.concat('x-access-token:', process.env['GITHUB_TOKEN']);
+      gitURL = gitURL.concat('x-access-token:', process.env['GITHUB_TOKEN']);
     } else {
       core.setFailed('❌️ You have to provide a GITHUB_TOKEN or GITHUB_PAT');
       return;
     }
-    gitURL.concat('@github.com/', repo, '.git');
     await exec.exec('git', [
       'push',
       '--force',
       '--quiet',
-      gitURL,
+      gitURL.concat('@github.com/', repo, '.git'),
       `master:${target_branch}`
     ]);
 
