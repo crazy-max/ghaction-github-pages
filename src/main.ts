@@ -62,9 +62,7 @@ async function run() {
     ]);
 
     process.chdir(process.env['GITHUB_WORKSPACE'] || '.');
-    core.info(
-      `🎉 Content of $INPUT_BUILD_DIR has been deployed to GitHub Pages.`
-    );
+    core.info(`🎉 Content of ${build_dir} has been deployed to GitHub Pages.`);
   } catch (error) {
     core.setFailed(error.message);
   }
