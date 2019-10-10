@@ -13,11 +13,9 @@ inputs:
     description: 'Git branch where assets will be deployed'
     default: 'gh-pages'
   build_dir:
-    description: 'Path to build directory to deploy'
+    description: 'Build directory to deploy'
     required: true
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  env:
-    GITHUB_TOKEN: 'As provided by GitHub Actions'
+  using: 'node12'
+  main: 'lib/main.js'
