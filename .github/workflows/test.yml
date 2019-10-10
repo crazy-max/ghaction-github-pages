@@ -30,7 +30,7 @@ jobs:
       -
         name: Deploy
         if: success()
-        uses: crazy-max/ghaction-github-pages@master
+        uses: ./
         with:
           target_branch: test
           build_dir: public
