@@ -25,7 +25,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v1
       -
         name: Build
         run: |
@@ -44,7 +44,7 @@ jobs:
       -
         name: Deploy
         if: success()
-        uses: crazy-max/ghaction-github-pages@master
+        uses: crazy-max/ghaction-github-pages@v1
         with:
           target_branch: gh-pages
           build_dir: public
@@ -80,7 +80,7 @@ Currently, `GITHUB_TOKEN` does not suffice to trigger a page build on a **public
 ```yaml
 - name: Deploy
   if: success()
-  uses: crazy-max/ghaction-github-pages@master
+  uses: crazy-max/ghaction-github-pages@v1
   with:
     target_branch: gh-pages
     build_dir: public
