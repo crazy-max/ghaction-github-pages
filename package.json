@@ -31,7 +31,7 @@
     "@actions/io": "^1.0.0",
     "@types/node": "^12.7.12",
     "prettier": "^1.17.1",
-    "typescript": "^3.5.1",
+    "typescript": "^3.6.4",
     "typescript-formatter": "^7.2.2"
   }
 }
