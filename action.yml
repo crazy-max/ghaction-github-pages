@@ -1,6 +1,6 @@
 # https://help.github.com/en/articles/metadata-syntax-for-github-actions
 name: 'GitHub Pages'
-description: 'GitHub Action for deploying GitHub Pages'
+description: 'GitHub Action to deploy to GitHub Pages'
 author: 'crazy-max'
 branding:
   color: 'green'

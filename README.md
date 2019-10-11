@@ -6,7 +6,7 @@
 
 ## ✨ About
 
-A GitHub Action for deploying GitHub Pages
+A GitHub Action to deploy to GitHub Pages
 
 > **:warning: Note:** To use this action, you must have access to the [GitHub Actions](https://github.com/features/actions) feature. GitHub Actions are currently only available in public beta. You can [apply for the GitHub Actions beta here](https://github.com/features/actions/signup/).
 

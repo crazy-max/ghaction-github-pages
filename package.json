@@ -1,6 +1,6 @@
 {
   "name": "github-pages",
-  "description": "GitHub Action for deploying GitHub Pages",
+  "description": "GitHub Action to deploy to GitHub Pages",
   "main": "lib/main.js",
   "directories": {
     "lib": "lib"
