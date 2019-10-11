@@ -58,11 +58,11 @@ jobs:
 
 Following inputs can be used as `step.with` keys
 
-| Name            | Type    | Description                                                                             |
-|-----------------|---------|-----------------------------------------------------------------------------------------|
-| `repo`          | String  | GitHub repository where assets will be deployed. Example: portapps/portapps.github.io   |
-| `target_branch` | String  | Git branch where assets will be deployed (default `gh-pages`)                           |
-| `build_dir`     | String  | Path to build directory to deploy                                                       |
+| Name            | Type    | Description                                                                                        |
+|-----------------|---------|----------------------------------------------------------------------------------------------------|
+| `repo`          | String  | GitHub repository where assets will be deployed (default current). Eg: portapps/portapps.github.io |
+| `target_branch` | String  | Git branch where assets will be deployed (default `gh-pages`)                                      |
+| `build_dir`     | String  | Build directory to deploy                                                                          |
 
 ### environment variables
 

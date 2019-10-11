@@ -8,7 +8,7 @@ branding:
 
 inputs:
   repo:
-    description: 'GitHub repository where assets will be deployed. Example: portapps/portapps.github.io'
+    description: 'GitHub repository where assets will be deployed (default current). Eg: portapps/portapps.github.io'
   target_branch:
     description: 'Git branch where assets will be deployed'
     default: 'gh-pages'
