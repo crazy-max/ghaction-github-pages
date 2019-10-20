@@ -5,6 +5,7 @@ on:
     branches:
       - 'master'
     paths:
+      - 'node_modules/**'
       - 'package.*'
       - '.github/workflows/master.yml'
 
