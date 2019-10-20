@@ -2,9 +2,6 @@ name: lint
 
 on:
   pull_request:
-    branches:
-      - master
-      - releases/*
     paths:
       - src/*
 
