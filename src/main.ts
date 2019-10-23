@@ -1,7 +1,7 @@
 import * as child_process from 'child_process';
-import * as fs from 'fs';
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
+import * as fs from 'fs';
 
 async function run() {
   try {
@@ -9,7 +9,14 @@ async function run() {
       core.getInput('repo') || process.env['GITHUB_REPOSITORY'] || '';
     const target_branch = core.getInput('target_branch') || 'gh-pages';
     const build_dir = core.getInput('build_dir', {required: true});
-    const username = process.env['GITHUB_ACTOR'] || 'github-actions';
+    const username =
+      core.getInput('comitter_name') ||
+      process.env['GITHUB_ACTOR'] ||
+      'github-actions';
+    const useremail =
+      core.getInput('comitter_email') || `${username}@users.noreply.github.com`;
+    const commitmessage =
+      core.getInput('commit_message') || 'Deploy to GitHub pages';
 
     if (!fs.existsSync(build_dir)) {
       core.setFailed('⛔️ Build dir does not exist');
@@ -23,11 +30,7 @@ async function run() {
     process.chdir(build_dir);
     await exec.exec('git', ['init']);
     await exec.exec('git', ['config', 'user.name', username]);
-    await exec.exec('git', [
-      'config',
-      'user.email',
-      `${username}@users.noreply.github.com`
-    ]);
+    await exec.exec('git', ['config', 'user.email', useremail]);
 
     try {
       child_process.execSync('git status --porcelain').toString();
@@ -37,12 +40,7 @@ async function run() {
     }
 
     await exec.exec('git', ['add', '.']);
-    await exec.exec('git', [
-      'commit',
-      '--allow-empty',
-      '-m',
-      'Deploy to GitHub pages'
-    ]);
+    await exec.exec('git', ['commit', '--allow-empty', '-m', commitmessage]);
 
     let gitURL = String('https://');
     if (process.env['GITHUB_PAT']) {
