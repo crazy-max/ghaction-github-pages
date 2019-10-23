@@ -6,7 +6,7 @@ on:
       - 'master'
     paths:
       - 'node_modules/**'
-      - 'package.*'
+      - 'package*.json'
       - '.github/workflows/master.yml'
 
 jobs:
