@@ -3,15 +3,23 @@ name: lint
 on:
   pull_request:
     paths:
-      - src/*
+      - '.github/workflows/lint.yml'
+      - 'src/*'
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
       -
+        # https://github.com/actions/checkout
         name: Checkout
         uses: actions/checkout@v1
+      -
+        # https://github.com/actions/setup-node
+        name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
       -
         name: Setup TS
         run: npm install tslint typescript -g
