@@ -6,10 +6,3 @@ update_configs:
     default_labels:
       - ":game_die: dependencies"
       - ":robot: bot"
-    allowed_updates:
-      - match:
-          update_type: "all"
-    automerged_updates:
-      - match:
-          dependency_type: "all"
-          update_type: "semver:patch"
