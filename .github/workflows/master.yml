@@ -21,6 +21,12 @@ jobs:
         name: Fix detached HEAD
         run: git checkout ${GITHUB_REF#refs/heads/}
       -
+        # https://github.com/actions/setup-node
+        name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      -
         name: Prune prod
         run: |
           rm -rf node_modules

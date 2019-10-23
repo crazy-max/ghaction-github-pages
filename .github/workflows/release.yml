@@ -41,6 +41,12 @@ jobs:
             git branch --set-upstream-to=origin/releases/${{ steps.prepare.outputs.major_tag }} releases/${{ steps.prepare.outputs.major_tag }}
           fi
       -
+        # https://github.com/actions/setup-node
+        name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      -
         name: NPM production deps
         run: |
           rm -rf node_modules
