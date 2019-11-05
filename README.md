@@ -63,6 +63,9 @@ Following inputs can be used as `step.with` keys
 | `repo`          | String  | GitHub repository where assets will be deployed (default current) |
 | `target_branch` | String  | Git branch where assets will be deployed (default `gh-pages`)     |
 | `build_dir`     | String  | Build directory to deploy                                         |
+| `comitter_name` | String  | Commit author's name                                              |
+| `comitter_email`| String  | Commit author's email                                             |
+| `commit_message`| String  | Commit message                                                    |
 
 ### environment variables
 

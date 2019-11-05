@@ -15,6 +15,15 @@ inputs:
   build_dir:
     description: 'Build directory to deploy'
     required: true
+  comitter_name:
+    description: 'Name of the commit author'
+    default: 'github-actions'
+  comitter_email:
+    description: 'Email of the commit author'
+    default: 'username@users.noreply.github.com'
+  commit_message:
+    description: 'Commit description'
+    default: 'Deploy to GitHub pages'
 
 runs:
   using: 'node12'
