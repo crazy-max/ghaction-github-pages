@@ -17,10 +17,10 @@ inputs:
     required: true
   comitter_name:
     description: 'Name of the commit author'
-    default: 'github-actions'
+    default: '<GITHUB_ACTOR>'
   comitter_email:
     description: 'Email of the commit author'
-    default: 'username@users.noreply.github.com'
+    default: '<GITHUB_ACTOR>@users.noreply.github.com'
   commit_message:
     description: 'Commit description'
     default: 'Deploy to GitHub pages'
