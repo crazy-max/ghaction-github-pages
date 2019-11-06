@@ -8,8 +8,8 @@ async function run() {
     const repo = core.getInput('repo') || process.env['GITHUB_REPOSITORY'] || '';
     const target_branch = core.getInput('target_branch') || 'gh-pages';
     const build_dir = core.getInput('build_dir', {required: true});
-    const comitter_name = core.getInput('comitter_name') || process.env['GITHUB_ACTOR'] || 'github-actions';
-    const comitter_email = core.getInput('comitter_email') || `${comitter_name}@users.noreply.github.com`;
+    const commit_name = core.getInput('commit_name') || process.env['GITHUB_ACTOR'] || 'github-actions';
+    const commit_email = core.getInput('commit_email') || `${commit_name}@users.noreply.github.com`;
     const commit_message = core.getInput('commit_message') || 'Deploy to GitHub pages';
 
     if (!fs.existsSync(build_dir)) {
@@ -21,8 +21,8 @@ async function run() {
 
     process.chdir(build_dir);
     await exec.exec('git', ['init']);
-    await exec.exec('git', ['config', 'user.name', comitter_name]);
-    await exec.exec('git', ['config', 'user.email', comitter_email]);
+    await exec.exec('git', ['config', 'user.name', commit_name]);
+    await exec.exec('git', ['config', 'user.email', commit_email]);
 
     try {
       child_process.execSync('git status --porcelain').toString();
