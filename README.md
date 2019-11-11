@@ -80,7 +80,7 @@ Following environment variables can be used as `step.env` keys
 
 ## :warning: Limitation
 
-Currently, `GITHUB_TOKEN` does not suffice to trigger a page build on a **public repository** (propagate content to the GitHub content-delivery network). You must therefore create a custom [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and use it through the `GITHUB_PAT` environment variable:
+Currently, `GITHUB_TOKEN` [does not suffice to trigger a page build](https://github.community/t5/GitHub-Actions/Github-action-not-triggering-gh-pages-upon-push/m-p/26869) on a **public repository** (propagate content to the GitHub content-delivery network). You must therefore create a custom [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and use it through the `GITHUB_PAT` environment variable:
 
 ```yaml
 - name: Deploy
