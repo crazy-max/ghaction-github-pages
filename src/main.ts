@@ -30,6 +30,7 @@ async function run() {
 
     process.chdir(build_dir);
     await exec.exec('git', ['init']);
+    await exec.exec('git', ['checkout', '--orphan', target_branch]);
     await exec.exec('git', ['config', 'user.name', commit_name]);
     await exec.exec('git', ['config', 'user.email', commit_email]);
 
