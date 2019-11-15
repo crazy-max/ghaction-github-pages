@@ -1,7 +1,9 @@
 import * as child_process from 'child_process';
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
+import ncp from 'ncp';
 import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 
 async function run() {
@@ -26,8 +28,6 @@ async function run() {
       fs.writeFileSync(path.join(build_dir, 'CNAME'), fqdn.trim());
     }
 
-    core.info(`🏃 Deploying ${build_dir} directory to ${target_branch} branch on ${repo} repo`);
-
     let remote_url = String('https://');
     if (process.env['GITHUB_PAT']) {
       core.info(`✅ Use GITHUB_PAT`);
@@ -41,7 +41,14 @@ async function run() {
     }
     remote_url = remote_url.concat('@github.com/', repo, '.git');
 
-    process.chdir(build_dir);
+    const tmpdir = fs.mkdtempSync(path.join(os.tmpdir(), 'github-pages-'));
+    process.chdir(tmpdir);
+
+    core.info(`🏃 Copying ${path.resolve(build_dir)} contents to ${tmpdir}`);
+    ncp.ncp(path.resolve(build_dir), tmpdir, {}, err => {
+      core.setFailed(`⛔️ Failed to copy ${path.resolve(build_dir)}`);
+      return;
+    });
 
     const remote_branch_exists =
       child_process.execSync(`git ls-remote --heads ${remote_url} ${target_branch}`, {encoding: 'utf8'}).trim().length >
@@ -54,7 +61,7 @@ async function run() {
       await exec.exec('git', ['checkout', '--orphan', target_branch]);
     }
 
-    core.info(`🔨 Configuring git committer to be ${comitter_name} <${comitter_name}>`);
+    core.info(`🔨 Configuring git committer to be ${comitter_name} <${comitter_email}>`);
     await exec.exec('git', ['config', 'user.name', comitter_name]);
     await exec.exec('git', ['config', 'user.email', comitter_email]);
 
@@ -85,6 +92,8 @@ async function run() {
       gitPushCmd.push('--force');
     }
     gitPushCmd.push(remote_url, target_branch);
+
+    core.info(`🏃 Deploying ${build_dir} directory to ${target_branch} branch on ${repo} repo`);
     await exec.exec('git', gitPushCmd);
 
     process.chdir(process.env['GITHUB_WORKSPACE'] || '.');
