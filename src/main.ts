@@ -71,7 +71,7 @@ async function run() {
       core.info(`✅ Force push`);
       gitPushCmd.push('--force');
     }
-    gitPushCmd.push(gitURL.concat('@github.com/', repo, '.git'), `${target_branch}:${target_branch}`);
+    gitPushCmd.push(gitURL.concat('@github.com/', repo, '.git'), target_branch);
     await exec.exec('git', gitPushCmd);
 
     process.chdir(process.env['GITHUB_WORKSPACE'] || '.');
