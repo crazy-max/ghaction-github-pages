@@ -26,11 +26,11 @@
   "dependencies": {
     "@actions/core": "^1.2.0",
     "@actions/exec": "^1.0.1",
-    "@types/ncp": "^2.0.3",
-    "ncp": "^2.0.0"
+    "fs-extra": "^8.1.0"
   },
   "devDependencies": {
     "@actions/io": "^1.0.0",
+    "@types/fs-extra": "^8.0.1",
     "@types/node": "^12.12.7",
     "prettier": "^1.19.1",
     "typescript": "^3.7.2",

@@ -1,7 +1,7 @@
 import * as child_process from 'child_process';
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
-import {ncp} from 'ncp';
+import {copySync} from 'fs-extra';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -45,13 +45,7 @@ async function run() {
     process.chdir(tmpdir);
 
     core.info(`🏃 Copying ${path.resolve(build_dir)} contents to ${tmpdir}`);
-    await new Promise((resolve, reject) => {
-      ncp.ncp(path.resolve(build_dir), tmpdir, (err) => {
-        if (err) {
-          core.setFailed(`⛔️ Failed to copy ${path.resolve(build_dir)}`);
-        }
-      });
-    });
+    copySync(path.resolve(build_dir), tmpdir);
 
     const remote_branch_exists =
       child_process.execSync(`git ls-remote --heads ${remote_url} ${target_branch}`, {encoding: 'utf8'}).trim().length >
