@@ -45,9 +45,10 @@ async function run() {
     process.chdir(tmpdir);
 
     core.info(`🏃 Copying ${path.resolve(build_dir)} contents to ${tmpdir}`);
-    ncp.ncp(path.resolve(build_dir), tmpdir, {}, err => {
-      core.setFailed(`⛔️ Failed to copy ${path.resolve(build_dir)}`);
-      return;
+    ncp.ncp(path.resolve(build_dir), tmpdir, err => {
+      if (err !== null) {
+        core.setFailed(`⛔️ Failed to copy ${path.resolve(build_dir)}`);
+      }
     });
 
     const remote_branch_exists =
