@@ -65,8 +65,8 @@ Following inputs can be used as `step.with` keys
 | `keep_history`       | Bool    | Create incremental commit instead of doing push force (default `false`)     |
 | `allow_empty_commit` | Bool    | Allow an empty commit to be created (default `true`)                        |
 | `build_dir`          | String  | Build directory to deploy (**required**)                                    |
-| `commit_name`        | String  | Commit author's name  (default [GITHUB_ACTOR](https://help.github.com/en/github/automating-your-workflow-with-github-actions/using-environment-variables#default-environment-variables) or `github-actions`) |
-| `commit_email`       | String  | Commit author's email (default `<committer_name>@users.noreply.github.com`) |
+| `comitter_name`      | String  | Commit author's name  (default [GITHUB_ACTOR](https://help.github.com/en/github/automating-your-workflow-with-github-actions/using-environment-variables#default-environment-variables) or `github-actions`) |
+| `comitter_email`     | String  | Commit author's email (default `<committer_name>@users.noreply.github.com`) |
 | `commit_message`     | String  | Commit message (default `Deploy to GitHub pages`)                           |
 | `fqdn`               | String  | Write the given domain name to the CNAME file                               |
 
