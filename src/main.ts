@@ -47,6 +47,7 @@ async function run() {
 
     core.info(`🏃 Copying ${path.join(currentdir, build_dir)} contents to ${tmpdir}`);
     copySync(path.join(currentdir, build_dir), tmpdir);
+    await exec.exec('ls', ['-al']);
 
     const remote_branch_exists =
       child_process.execSync(`git ls-remote --heads ${remote_url} ${target_branch}`, {encoding: 'utf8'}).trim().length >
