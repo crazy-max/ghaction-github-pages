@@ -23,11 +23,6 @@ async function run() {
       return;
     }
 
-    if (fqdn) {
-      core.info(`✍️ Writing ${fqdn} domain name to ${path.join(build_dir, 'CNAME')}`);
-      fs.writeFileSync(path.join(build_dir, 'CNAME'), fqdn.trim());
-    }
-
     let remote_url = String('https://');
     if (process.env['GITHUB_PAT']) {
       core.info(`✅ Use GITHUB_PAT`);
@@ -45,19 +40,23 @@ async function run() {
     const currentdir = path.resolve('.');
     process.chdir(tmpdir);
 
-    core.info(`🏃 Copying ${path.join(currentdir, build_dir)} contents to ${tmpdir}`);
-    copySync(path.join(currentdir, build_dir), tmpdir);
-    await exec.exec('ls', ['-al']);
-
     const remote_branch_exists =
       child_process.execSync(`git ls-remote --heads ${remote_url} ${target_branch}`, {encoding: 'utf8'}).trim().length >
       0;
     if (remote_branch_exists) {
-      await exec.exec('git', ['clone', '--quiet', '--branch', target_branch, '--depth', '1', remote_url]);
+      await exec.exec('git', ['clone', '--quiet', '--branch', target_branch, '--depth', '1', remote_url, '.']);
     } else {
       core.info(`🏃 Initializing local git repo`);
       await exec.exec('git', ['init', '.']);
       await exec.exec('git', ['checkout', '--orphan', target_branch]);
+    }
+
+    core.info(`🏃 Copying ${path.join(currentdir, build_dir)} contents to ${tmpdir}`);
+    copySync(path.join(currentdir, build_dir), tmpdir);
+
+    if (fqdn) {
+      core.info(`✍️ Writing ${fqdn} domain name to ${path.join(build_dir, 'CNAME')}`);
+      fs.writeFileSync(path.join(build_dir, 'CNAME'), fqdn.trim());
     }
 
     core.info(`🔨 Configuring git committer to be ${comitter_name} <${comitter_email}>`);
