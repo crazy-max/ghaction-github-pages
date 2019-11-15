@@ -63,7 +63,7 @@ Following inputs can be used as `step.with` keys
 | `repo`               | String  | GitHub repository where assets will be deployed (default current)           |
 | `target_branch`      | String  | Git branch where assets will be deployed (default `gh-pages`)               |
 | `keep_history`       | Bool    | Create incremental commit instead of doing push force (default `false`)     |
-| `allow_empty_commit` | Bool    | Git branch where assets will be deployed (default `true`)                   |
+| `allow_empty_commit` | Bool    | Allow an empty commit to be created (default `true`)                        |
 | `build_dir`          | String  | Build directory to deploy (**required**)                                    |
 | `commit_name`        | String  | Commit author's name  (default [GITHUB_ACTOR](https://help.github.com/en/github/automating-your-workflow-with-github-actions/using-environment-variables#default-environment-variables) or `github-actions`) |
 | `commit_email`       | String  | Commit author's email (default `<committer_name>@users.noreply.github.com`) |
