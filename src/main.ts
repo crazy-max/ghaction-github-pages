@@ -42,10 +42,11 @@ async function run() {
     remote_url = remote_url.concat('@github.com/', repo, '.git');
 
     const tmpdir = fs.mkdtempSync(path.join(os.tmpdir(), 'github-pages-'));
+    const currentdir = path.resolve('.');
     process.chdir(tmpdir);
 
-    core.info(`🏃 Copying ${path.resolve(build_dir)} contents to ${tmpdir}`);
-    copySync(path.resolve(build_dir), tmpdir);
+    core.info(`🏃 Copying ${path.join(currentdir, build_dir)} contents to ${tmpdir}`);
+    copySync(path.join(currentdir, build_dir), tmpdir);
 
     const remote_branch_exists =
       child_process.execSync(`git ls-remote --heads ${remote_url} ${target_branch}`, {encoding: 'utf8'}).trim().length >
@@ -93,7 +94,7 @@ async function run() {
     core.info(`🏃 Deploying ${build_dir} directory to ${target_branch} branch on ${repo} repo`);
     await exec.exec('git', gitPushCmd);
 
-    process.chdir(process.env['GITHUB_WORKSPACE'] || '.');
+    process.chdir(currentdir);
     core.info(`🎉 Content of ${build_dir} has been deployed to GitHub Pages.`);
   } catch (error) {
     core.setFailed(error.message);
