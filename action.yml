@@ -12,6 +12,12 @@ inputs:
   target_branch:
     description: 'Git branch where assets will be deployed'
     default: 'gh-pages'
+  keep_history:
+    description: 'Create incremental commit instead of doing push force'
+    default: 'false'
+  allow_empty_commit:
+    description: 'Allow an empty commit to be created'
+    default: 'true'
   build_dir:
     description: 'Build directory to deploy'
     required: true
@@ -21,6 +27,8 @@ inputs:
     description: 'Commit author''s email'
   commit_message:
     description: 'Commit message'
+  fqdn:
+    description: 'Write the given domain name to the CNAME file'
 
 runs:
   using: 'node12'
