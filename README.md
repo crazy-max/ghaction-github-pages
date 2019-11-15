@@ -58,23 +58,26 @@ jobs:
 
 Following inputs can be used as `step.with` keys
 
-| Name            | Type    | Description                                                       |
-|-----------------|---------|-------------------------------------------------------------------|
-| `repo`          | String  | GitHub repository where assets will be deployed (default current) |
-| `target_branch` | String  | Git branch where assets will be deployed (default `gh-pages`)     |
-| `build_dir`     | String  | Build directory to deploy (**required**)                          |
-| `commit_name`   | String  | Commit author's name  (default [GITHUB_ACTOR](https://help.github.com/en/github/automating-your-workflow-with-github-actions/using-environment-variables#default-environment-variables) or `github-actions`) |
-| `commit_email`  | String  | Commit author's email (default `<committer_name>@users.noreply.github.com`) |
-| `commit_message`| String  | Commit message (default `Deploy to GitHub pages`)                 |
+| Name                 | Type    | Description                                                                 |
+|----------------------|---------|-----------------------------------------------------------------------------|
+| `repo`               | String  | GitHub repository where assets will be deployed (default current)           |
+| `target_branch`      | String  | Git branch where assets will be deployed (default `gh-pages`)               |
+| `keep_history`       | Bool    | Create incremental commit instead of doing push force (default `false`)     |
+| `allow_empty_commit` | Bool    | Git branch where assets will be deployed (default `true`)                   |
+| `build_dir`          | String  | Build directory to deploy (**required**)                                    |
+| `commit_name`        | String  | Commit author's name  (default [GITHUB_ACTOR](https://help.github.com/en/github/automating-your-workflow-with-github-actions/using-environment-variables#default-environment-variables) or `github-actions`) |
+| `commit_email`       | String  | Commit author's email (default `<committer_name>@users.noreply.github.com`) |
+| `commit_message`     | String  | Commit message (default `Deploy to GitHub pages`)                           |
+| `fqdn`               | String  | Write the given domain name to the CNAME file                               |
 
 ### environment variables
 
 Following environment variables can be used as `step.env` keys
 
-| Name           | Description                          |
-|----------------|--------------------------------------|
-| `GITHUB_TOKEN` | GITHUB_TOKEN as provided by `secrets`|
-| `GITHUB_PAT`   | [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) (see Limitation section below)|
+| Name           | Description                           |
+|----------------|---------------------------------------|
+| `GITHUB_TOKEN` | GITHUB_TOKEN as provided by `secrets` |
+| `GITHUB_PAT`   | [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) (see [Limitation section](#warning-limitation) below)|
 
 ## :warning: Limitation
 
