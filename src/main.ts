@@ -11,8 +11,8 @@ async function run() {
     const keep_history: boolean = /true/i.test(core.getInput('keep_history'));
     const allow_empty_commit: boolean = /true/i.test(core.getInput('allow_empty_commit'));
     const build_dir: string = core.getInput('build_dir', {required: true});
-    const commit_name: string = core.getInput('commit_name') || process.env['GITHUB_ACTOR'] || 'github-actions';
-    const commit_email: string = core.getInput('commit_email') || `${commit_name}@users.noreply.github.com`;
+    const comitter_name: string = core.getInput('comitter_name') || process.env['GITHUB_ACTOR'] || 'github-actions';
+    const comitter_email: string = core.getInput('comitter_email') || `${comitter_name}@users.noreply.github.com`;
     const commit_message: string = core.getInput('commit_message') || 'Deploy to GitHub pages';
     const fqdn: string = core.getInput('fqdn');
 
@@ -28,11 +28,35 @@ async function run() {
 
     core.info(`🏃 Deploying ${build_dir} directory to ${target_branch} branch on ${repo} repo`);
 
+    let remote_url = String('https://');
+    if (process.env['GITHUB_PAT']) {
+      core.info(`✅ Use GITHUB_PAT`);
+      remote_url = remote_url.concat(process.env['GITHUB_PAT']);
+    } else if (process.env['GITHUB_TOKEN']) {
+      core.info(`✅ Use GITHUB_TOKEN`);
+      remote_url = remote_url.concat('x-access-token:', process.env['GITHUB_TOKEN']);
+    } else {
+      core.setFailed('❌️ You have to provide a GITHUB_TOKEN or GITHUB_PAT');
+      return;
+    }
+    remote_url = remote_url.concat('@github.com/', repo, '.git');
+
     process.chdir(build_dir);
-    await exec.exec('git', ['init']);
-    await exec.exec('git', ['checkout', '--orphan', target_branch]);
-    await exec.exec('git', ['config', 'user.name', commit_name]);
-    await exec.exec('git', ['config', 'user.email', commit_email]);
+
+    const remote_branch_exists =
+      child_process.execSync(`git ls-remote --heads ${remote_url} ${target_branch}`, {encoding: 'utf8'}).trim().length >
+      0;
+    if (remote_branch_exists) {
+      await exec.exec('git', ['clone', '--quiet', '--branch', target_branch, '--depth', '1', remote_url]);
+    } else {
+      core.info(`🏃 Initializing local git repo`);
+      await exec.exec('git', ['init', '.']);
+      await exec.exec('git', ['checkout', '--orphan', target_branch]);
+    }
+
+    core.info(`🔨 Configuring git committer to be ${comitter_name} <${comitter_name}>`);
+    await exec.exec('git', ['config', 'user.name', comitter_name]);
+    await exec.exec('git', ['config', 'user.email', comitter_email]);
 
     try {
       child_process.execSync('git status --porcelain').toString();
@@ -54,25 +78,13 @@ async function run() {
 
     await exec.exec('git', ['show', '--stat-count=10', 'HEAD']);
 
-    let gitURL = String('https://');
-    if (process.env['GITHUB_PAT']) {
-      core.info(`✅ Use GITHUB_PAT`);
-      gitURL = gitURL.concat(process.env['GITHUB_PAT']);
-    } else if (process.env['GITHUB_TOKEN']) {
-      core.info(`✅ Use GITHUB_TOKEN`);
-      gitURL = gitURL.concat('x-access-token:', process.env['GITHUB_TOKEN']);
-    } else {
-      core.setFailed('❌️ You have to provide a GITHUB_TOKEN or GITHUB_PAT');
-      return;
-    }
-
     let gitPushCmd: Array<string> = [];
     gitPushCmd.push('push', '--quiet');
     if (!keep_history) {
       core.info(`✅ Force push`);
       gitPushCmd.push('--force');
     }
-    gitPushCmd.push(gitURL.concat('@github.com/', repo, '.git'), target_branch);
+    gitPushCmd.push(remote_url, target_branch);
     await exec.exec('git', gitPushCmd);
 
     process.chdir(process.env['GITHUB_WORKSPACE'] || '.');
