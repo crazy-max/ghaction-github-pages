@@ -21,9 +21,9 @@ inputs:
   build_dir:
     description: 'Build directory to deploy'
     required: true
-  comitter_name:
+  committer_name:
     description: 'Commit author''s name'
-  comitter_email:
+  committer_email:
     description: 'Commit author''s email'
   commit_message:
     description: 'Commit message'

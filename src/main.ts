@@ -13,8 +13,8 @@ async function run() {
     const keep_history: boolean = /true/i.test(core.getInput('keep_history'));
     const allow_empty_commit: boolean = /true/i.test(core.getInput('allow_empty_commit'));
     const build_dir: string = core.getInput('build_dir', {required: true});
-    const comitter_name: string = core.getInput('comitter_name') || process.env['GITHUB_ACTOR'] || 'github-actions';
-    const comitter_email: string = core.getInput('comitter_email') || `${comitter_name}@users.noreply.github.com`;
+    const committer_name: string = core.getInput('committer_name') || process.env['GITHUB_ACTOR'] || 'github-actions';
+    const committer_email: string = core.getInput('committer_email') || `${committer_name}@users.noreply.github.com`;
     const commit_message: string = core.getInput('commit_message') || 'Deploy to GitHub pages';
     const fqdn: string = core.getInput('fqdn');
 
@@ -59,9 +59,9 @@ async function run() {
       fs.writeFileSync(path.join(build_dir, 'CNAME'), fqdn.trim());
     }
 
-    core.info(`🔨 Configuring git committer to be ${comitter_name} <${comitter_email}>`);
-    await exec.exec('git', ['config', 'user.name', comitter_name]);
-    await exec.exec('git', ['config', 'user.email', comitter_email]);
+    core.info(`🔨 Configuring git committer to be ${committer_name} <${committer_email}>`);
+    await exec.exec('git', ['config', 'user.name', committer_name]);
+    await exec.exec('git', ['config', 'user.email', committer_email]);
 
     try {
       child_process.execSync('git status --porcelain').toString();
