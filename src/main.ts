@@ -26,10 +26,10 @@ async function run() {
     let remote_url = String('https://');
     if (process.env['GITHUB_PAT']) {
       core.info(`✅ Use GITHUB_PAT`);
-      remote_url = remote_url.concat(process.env['GITHUB_PAT']);
+      remote_url = remote_url.concat(process.env['GITHUB_PAT'].trim());
     } else if (process.env['GITHUB_TOKEN']) {
       core.info(`✅ Use GITHUB_TOKEN`);
-      remote_url = remote_url.concat('x-access-token:', process.env['GITHUB_TOKEN']);
+      remote_url = remote_url.concat('x-access-token:', process.env['GITHUB_TOKEN'].trim());
     } else {
       core.setFailed('❌️ You have to provide a GITHUB_TOKEN or GITHUB_PAT');
       return;
