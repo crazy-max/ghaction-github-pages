@@ -43,7 +43,7 @@ async function run() {
     const remote_branch_exists =
       child_process.execSync(`git ls-remote --heads ${remote_url} ${target_branch}`, {encoding: 'utf8'}).trim().length >
       0;
-    if (remote_branch_exists) {
+    if (keep_history && remote_branch_exists) {
       await exec.exec('git', ['clone', '--quiet', '--branch', target_branch, '--depth', '1', remote_url, '.']);
     } else {
       core.info(`🏃 Initializing local git repo`);
