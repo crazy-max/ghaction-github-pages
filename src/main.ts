@@ -55,8 +55,8 @@ async function run() {
     copySync(path.join(currentdir, build_dir), tmpdir);
 
     if (fqdn) {
-      core.info(`✍️ Writing ${fqdn} domain name to ${path.join(build_dir, 'CNAME')}`);
-      fs.writeFileSync(path.join(build_dir, 'CNAME'), fqdn.trim());
+      core.info(`✍️ Writing ${fqdn} domain name to ${path.join(tmpdir, 'CNAME')}`);
+      fs.writeFileSync(path.join(tmpdir, 'CNAME'), fqdn.trim());
     }
 
     core.info(`🔨 Configuring git committer to be ${committer_name} <${committer_email}>`);
