@@ -29,7 +29,7 @@
     "fs-extra": "^8.1.0"
   },
   "devDependencies": {
-    "@actions/io": "^1.0.0",
+    "@actions/io": "^1.0.2",
     "@types/fs-extra": "^8.0.1",
     "@types/node": "^13.1.6",
     "prettier": "^1.19.1",
