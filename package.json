@@ -24,7 +24,7 @@
   "author": "CrazyMax",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.0",
+    "@actions/core": "^1.2.1",
     "@actions/exec": "^1.0.3",
     "fs-extra": "^8.1.0"
   },
