@@ -4,13 +4,13 @@
 [![Become a sponsor](https://img.shields.io/badge/sponsor-crazy--max-181717.svg?logo=github&style=flat-square)](https://github.com/sponsors/crazy-max)
 [![Paypal Donate](https://img.shields.io/badge/donate-paypal-00457c.svg?logo=paypal&style=flat-square)](https://www.paypal.me/crazyws)
 
-## ✨ About
+## About
 
 A GitHub Action to deploy to GitHub Pages
 
 If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitHub Actions!
 
-## 🚀 Usage
+## Usage
 
 Below is a simple snippet to deploy to GitHub Pages. A [test example](https://github.com/crazy-max/ghaction-github-pages/actions?query=workflow%3Atest) is also available for this repository.
 
@@ -52,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-## 💅 Customizing
+## Customizing
 
 ### inputs
 
@@ -79,7 +79,7 @@ Following environment variables can be used as `step.env` keys
 | `GITHUB_TOKEN` | GITHUB_TOKEN as provided by `secrets` |
 | `GITHUB_PAT`   | [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) (see [Limitation section](#warning-limitation) below)|
 
-## :warning: Limitation
+## Limitation
 
 Currently, `GITHUB_TOKEN` [does not suffice to trigger a page build](https://github.community/t5/GitHub-Actions/Github-action-not-triggering-gh-pages-upon-push/m-p/26869) on a **public repository** (propagate content to the GitHub content-delivery network). You must therefore create a custom [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and use it through the `GITHUB_PAT` environment variable:
 
@@ -94,12 +94,12 @@ Currently, `GITHUB_TOKEN` [does not suffice to trigger a page build](https://git
     GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
 ```
 
-## 🤝 How can I help ?
+## How can I help ?
 
 All kinds of contributions are welcome :raised_hands:! The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon: You can also support this project by [**becoming a sponsor on GitHub**](https://github.com/sponsors/crazy-max) :clap: or by making a [Paypal donation](https://www.paypal.me/crazyws) to ensure this journey continues indefinitely! :rocket:
 
 Thanks again for your support, it is much appreciated! :pray:
 
-## 📝 License
+## License
 
 MIT. See `LICENSE` for more details.
