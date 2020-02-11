@@ -59,6 +59,12 @@ async function run() {
       fs.writeFileSync(path.join(tmpdir, 'CNAME'), fqdn.trim());
     }
 
+    const dirty = child_process.execSync(`git status --short`, {encoding: 'utf8'}).trim().length > 0;
+    if (keep_history && remote_branch_exists && !dirty) {
+      core.info('⚠️ There are no changes to commit, stopping.');
+      return;
+    }
+
     core.info(`🔨 Configuring git committer to be ${committer_name} <${committer_email}>`);
     await exec.exec('git', ['config', 'user.name', committer_name]);
     await exec.exec('git', ['config', 'user.email', committer_email]);
