@@ -5,6 +5,12 @@
   "directories": {
     "lib": "lib"
   },
+  "scripts": {
+    "build": "tsc && ncc build",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "pre-checkin": "npm run format && npm run build"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/crazy-max/ghaction-docker-buildx.git"
@@ -26,15 +32,9 @@
     "@actions/io": "^1.0.2",
     "@types/fs-extra": "^8.1.0",
     "@types/node": "^13.11.0",
+    "@zeit/ncc": "^0.22.1",
     "prettier": "^2.0.4",
     "typescript": "^3.8.3",
     "typescript-formatter": "^7.2.2"
-  },
-  "scripts": {
-    "build-dep": "npm install -g removeNPMAbsolutePaths",
-    "build": "tsc",
-    "format": "prettier --write **/*.ts",
-    "format-check": "prettier --check **/*.ts",
-    "prune": "npm prune --production && removeNPMAbsolutePaths \"./\" --force --fields _where _args"
   }
 }

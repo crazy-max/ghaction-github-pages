@@ -15,6 +15,11 @@ jobs:
       -
         name: Build
         run: |
+          npm install
+          npm run build
+      -
+        name: Gen dummy page
+        run: |
           mkdir public
           cat > public/index.html <<EOL
           <!doctype html>
