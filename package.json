@@ -31,7 +31,7 @@
   "devDependencies": {
     "@actions/io": "^1.0.2",
     "@types/fs-extra": "^8.1.0",
-    "@types/node": "^13.13.0",
+    "@types/node": "^13.13.1",
     "@zeit/ncc": "^0.22.1",
     "prettier": "^2.0.4",
     "typescript": "^3.8.3",
