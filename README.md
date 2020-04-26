@@ -76,7 +76,7 @@ Following environment variables can be used as `step.env` keys
 
 | Name           | Description                           |
 |----------------|---------------------------------------|
-| `GITHUB_TOKEN` | GITHUB_TOKEN as provided by `secrets` |
+| `GITHUB_TOKEN` | [GITHUB_TOKEN](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#example-passing-github_token-as-an-input) as provided by `secrets` |
 | `GITHUB_PAT`   | [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) (see [Limitation section](#warning-limitation) below)|
 
 ## Limitation
