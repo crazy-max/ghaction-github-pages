@@ -3,7 +3,7 @@ name: test
 on:
   push:
     branches:
-      - master
+      - 'dev'
 
 jobs:
   github-pages:
@@ -37,7 +37,7 @@ jobs:
         if: success()
         uses: ./
         with:
-          target_branch: test
+          target_branch: gh-pages
           build_dir: public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,9 +1,9 @@
-name: master
+name: dev
 
 on:
   push:
     branches:
-      - master
+      - 'dev'
 
 jobs:
   prune:
