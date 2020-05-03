@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0 (2020/05/03)
+
+* Personal Access Token is not required anymore to trigger a page build on a public repository (#1)
+* Update deps
+
 ## 1.4.1 (2020/04/26)
 
 * `GITHUB_TOKEN` documentation link (#90)
