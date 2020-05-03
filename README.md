@@ -12,7 +12,7 @@ If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitH
 
 ## Usage
 
-Below is a simple snippet to deploy to GitHub Pages. A [test example](https://github.com/crazy-max/ghaction-github-pages/actions?query=workflow%3Atest) is also available for this repository.
+Below is a simple snippet to deploy to GitHub Pages. A [test workflow](https://github.com/crazy-max/ghaction-github-pages/actions?query=workflow%3Atest) is also available for this repository and [deploys to GitHub pages](https://crazy-max.github.io/ghaction-github-pages/).
 
 ```yaml
 name: website
@@ -65,8 +65,8 @@ Following inputs can be used as `step.with` keys
 | `keep_history`       | Bool    | Create incremental commit instead of doing push force (default `false`)     |
 | `allow_empty_commit` | Bool    | Allow an empty commit to be created (default `true`)                        |
 | `build_dir`          | String  | Build directory to deploy (**required**)                                    |
-| `committer_name`      | String  | Commit author's name  (default [GITHUB_ACTOR](https://help.github.com/en/github/automating-your-workflow-with-github-actions/using-environment-variables#default-environment-variables) or `github-actions`) |
-| `committer_email`     | String  | Commit author's email (default `<committer_name>@users.noreply.github.com`) |
+| `committer_name`     | String  | Commit author's name  (default [GITHUB_ACTOR](https://help.github.com/en/github/automating-your-workflow-with-github-actions/using-environment-variables#default-environment-variables) or `github-actions`) |
+| `committer_email`    | String  | Commit author's email (default `<committer_name>@users.noreply.github.com`) |
 | `commit_message`     | String  | Commit message (default `Deploy to GitHub pages`)                           |
 | `fqdn`               | String  | Write the given domain name to the CNAME file                               |
 
@@ -77,24 +77,8 @@ Following environment variables can be used as `step.env` keys
 | Name           | Description                           |
 |----------------|---------------------------------------|
 | `GITHUB_TOKEN` | [GITHUB_TOKEN](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token) as provided by `secrets` |
-| `GITHUB_PAT`   | [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) (see [Limitation section](#warning-limitation) below)|
 
-## Limitation
-
-Currently, `GITHUB_TOKEN` [does not suffice to trigger a page build](https://github.community/t5/GitHub-Actions/Github-action-not-triggering-gh-pages-upon-push/m-p/26869) on a **public repository** (propagate content to the GitHub content-delivery network). You must therefore create a custom [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) with `repo` permissions and use it through the `GITHUB_PAT` environment variable:
-
-```yaml
-- name: Deploy
-  if: success()
-  uses: crazy-max/ghaction-github-pages@v1
-  with:
-    target_branch: gh-pages
-    build_dir: public
-  env:
-    GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
-```
-
-## How can I help ?
+## How can I help?
 
 All kinds of contributions are welcome :raised_hands:! The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon: You can also support this project by [**becoming a sponsor on GitHub**](https://github.com/sponsors/crazy-max) :clap: or by making a [Paypal donation](https://www.paypal.me/crazyws) to ensure this journey continues indefinitely! :rocket:
 
