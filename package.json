@@ -2,9 +2,6 @@
   "name": "github-pages",
   "description": "GitHub Action to deploy to GitHub Pages",
   "main": "lib/main.js",
-  "directories": {
-    "lib": "lib"
-  },
   "scripts": {
     "build": "tsc && ncc build",
     "format": "prettier --write **/*.ts",
@@ -24,7 +21,7 @@
   "author": "CrazyMax",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.3",
+    "@actions/core": "^1.2.4",
     "@actions/exec": "^1.0.4",
     "fs-extra": "^9.0.0"
   },
