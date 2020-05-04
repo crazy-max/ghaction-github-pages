@@ -27,9 +27,6 @@ async function run() {
     if (process.env['GITHUB_PAT']) {
       core.info(`✅ Use GITHUB_PAT`);
       remote_url = remote_url.concat(process.env['GITHUB_PAT'].trim());
-      core.warning(
-        'Personal Access Token is not required anymore to trigger a page build on a public repository (see https://github.com/crazy-max/ghaction-github-pages/issues/1)'
-      );
     } else if (process.env['GITHUB_TOKEN']) {
       core.info(`✅ Use GITHUB_TOKEN`);
       remote_url = remote_url.concat('x-access-token:', process.env['GITHUB_TOKEN'].trim());
