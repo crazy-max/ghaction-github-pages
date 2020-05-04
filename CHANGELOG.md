@@ -3,7 +3,7 @@
 ## 1.5.1 (2020/05/04)
 
 * Keep PAT if you want to deploy to another repo
-* Remove limiation notice
+* Remove limitation notice
 
 ## 1.5.0 (2020/05/03)
 
