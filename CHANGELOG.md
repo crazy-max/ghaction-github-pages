@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.1 (2020/05/04)
+
+* Keep PAT if you want to deploy to another repo
+* Remove limiation notice
+
 ## 1.5.0 (2020/05/03)
 
 * Personal Access Token is not required anymore to trigger a page build on a public repository (#1)
