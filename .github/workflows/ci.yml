@@ -1,4 +1,4 @@
-name: test
+name: ci
 
 on:
   push:
@@ -6,17 +6,12 @@ on:
       - 'dev'
 
 jobs:
-  github-pages:
+  ci:
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Build
-        run: |
-          npm install
-          npm run build
       -
         name: Gen dummy page
         run: |
