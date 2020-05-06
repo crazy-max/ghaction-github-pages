@@ -12,7 +12,7 @@ If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitH
 
 ## Usage
 
-Below is a simple snippet to deploy to GitHub Pages. A [test workflow](https://github.com/crazy-max/ghaction-github-pages/actions?query=workflow%3Atest) is also available for this repository and deploys to GitHub pages at https://crazy-max.github.io/ghaction-github-pages/.
+Below is a simple snippet to deploy to GitHub Pages:
 
 ```yaml
 name: website
@@ -25,7 +25,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       -
         name: Build
         run: |
@@ -42,7 +42,7 @@ jobs:
           </html>
           EOL
       -
-        name: Deploy
+        name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v1
         with:
@@ -51,6 +51,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+A [test workflow](https://github.com/crazy-max/ghaction-github-pages/actions?query=workflow%3Atest) is also available for this repository and deploys to GitHub pages at https://crazy-max.github.io/ghaction-github-pages/.
 
 ## Customizing
 
