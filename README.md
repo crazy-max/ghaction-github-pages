@@ -10,6 +10,8 @@ A GitHub Action to deploy to GitHub Pages
 
 If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitHub Actions!
 
+![GitHub Pages](.github/ghaction-github-pages.png)
+
 ## Usage
 
 Below is a simple snippet to deploy to GitHub Pages:
