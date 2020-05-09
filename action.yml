@@ -9,26 +9,34 @@ branding:
 inputs:
   repo:
     description: 'GitHub repository where assets will be deployed (default current)'
+    required: false
   target_branch:
     description: 'Git branch where assets will be deployed'
     default: 'gh-pages'
+    required: false
   keep_history:
     description: 'Create incremental commit instead of doing push force'
     default: 'false'
+    required: false
   allow_empty_commit:
     description: 'Allow an empty commit to be created'
     default: 'true'
+    required: false
   build_dir:
     description: 'Build directory to deploy'
     required: true
   committer_name:
     description: 'Commit author''s name'
+    required: false
   committer_email:
     description: 'Commit author''s email'
+    required: false
   commit_message:
     description: 'Commit message'
+    required: false
   fqdn:
     description: 'Write the given domain name to the CNAME file'
+    required: false
 
 runs:
   using: 'node12'

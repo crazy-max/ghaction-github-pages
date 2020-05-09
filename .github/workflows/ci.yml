@@ -6,6 +6,8 @@ on:
   push:
     branches:
       - 'dev'
+    paths-ignore:
+      - '**.md'
 
 jobs:
   ci:

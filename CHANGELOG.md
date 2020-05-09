@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.2 (2020/05/09)
+
+* Update CI workflow
+* Fix action yml
+
 ## 1.5.1 (2020/05/04)
 
 * Keep PAT if you want to deploy to another repo
