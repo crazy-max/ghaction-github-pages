@@ -1,8 +1,22 @@
 # Changelog
 
+## 2.0.0 (2020/05/11)
+
+* Add ability to sign commits through [Import GPG](https://github.com/crazy-max/ghaction-import-gpg) GitHub Action
+* Add `author` input
+* Fix default committer and author for GitHub Actions bot
+* More synthetic output 
+* Replace `GITHUB_PAT` env var with `GH_PAT` (#53)
+* Replace `committer_name` and `committer_email` inputs with `committer`
+
+## 1.5.3 (2020/05/11)
+
+* Mark `GITHUB_PAT`, `committer_name` and `committer_email` inputs as deprecated
+
 ## 1.5.2 (2020/05/09)
 
 * Update CI workflow
+* Cleanup local paths from extra fields
 * Fix action yml
 
 ## 1.5.1 (2020/05/04)
