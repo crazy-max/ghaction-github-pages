@@ -1,8 +1,13 @@
 # Changelog
 
+## 1.5.3 (2020/05/11)
+
+* Mark `GITHUB_PAT`, `committer_name` and `committer_email` inputs as deprecated
+
 ## 1.5.2 (2020/05/09)
 
 * Update CI workflow
+* Cleanup local paths from extra fields
 * Fix action yml
 
 ## 1.5.1 (2020/05/04)

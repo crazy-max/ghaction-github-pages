@@ -26,6 +26,7 @@ async function run() {
     let remote_url = String('https://');
     if (process.env['GITHUB_PAT']) {
       core.info(`✅ Use GITHUB_PAT`);
+      core.warning(`Deprecated. Use GH_PAT with crazy-max/ghaction-github-pages@v2`);
       remote_url = remote_url.concat(process.env['GITHUB_PAT'].trim());
     } else if (process.env['GITHUB_TOKEN']) {
       core.info(`✅ Use GITHUB_TOKEN`);

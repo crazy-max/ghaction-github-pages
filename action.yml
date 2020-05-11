@@ -26,10 +26,12 @@ inputs:
     description: 'Build directory to deploy'
     required: true
   committer_name:
-    description: 'Commit author''s name'
+    description: 'Deprecated. Use committer input with crazy-max/ghaction-github-pages@v2'
+    deprecationMessage: 'The committer_name input will not be supported. Use committer input with crazy-max/ghaction-github-pages@v2'
     required: false
   committer_email:
-    description: 'Commit author''s email'
+    description: 'Deprecated. Use committer input with crazy-max/ghaction-github-pages@v2'
+    deprecationMessage: 'The committer_email input will not be supported. Use committer input with crazy-max/ghaction-github-pages@v2'
     required: false
   commit_message:
     description: 'Commit message'
