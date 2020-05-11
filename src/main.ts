@@ -1,107 +1,107 @@
-import * as child_process from 'child_process';
-import * as core from '@actions/core';
-import * as exec from '@actions/exec';
+import addressparser from 'addressparser';
 import {copySync} from 'fs-extra';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
+import * as core from '@actions/core';
+import * as git from './git';
 
 async function run() {
   try {
     const repo: string = core.getInput('repo') || process.env['GITHUB_REPOSITORY'] || '';
-    const target_branch: string = core.getInput('target_branch') || 'gh-pages';
-    const keep_history: boolean = /true/i.test(core.getInput('keep_history'));
-    const allow_empty_commit: boolean = /true/i.test(core.getInput('allow_empty_commit'));
-    const build_dir: string = core.getInput('build_dir', {required: true});
-    const committer_name: string = core.getInput('committer_name') || process.env['GITHUB_ACTOR'] || 'github-actions';
-    const committer_email: string = core.getInput('committer_email') || `${committer_name}@users.noreply.github.com`;
-    const commit_message: string = core.getInput('commit_message') || 'Deploy to GitHub pages';
+    const targetBranch: string = core.getInput('target_branch') || git.defaults.targetBranch;
+    const keepHistory: boolean = /true/i.test(core.getInput('keep_history'));
+    const allowEmptyCommit: boolean = /true/i.test(core.getInput('allow_empty_commit'));
+    const buildDir: string = core.getInput('build_dir', {required: true});
+    const committer: string = core.getInput('committer') || git.defaults.committer;
+    const author: string = core.getInput('author') || git.defaults.author;
+    const commitMessage: string = core.getInput('commit_message') || git.defaults.message;
     const fqdn: string = core.getInput('fqdn');
 
-    if (!fs.existsSync(build_dir)) {
-      core.setFailed('⛔️ Build dir does not exist');
+    if (!fs.existsSync(buildDir)) {
+      core.setFailed('Build dir does not exist');
       return;
     }
 
-    let remote_url = String('https://');
-    if (process.env['GITHUB_PAT']) {
-      core.info(`✅ Use GITHUB_PAT`);
-      remote_url = remote_url.concat(process.env['GITHUB_PAT'].trim());
+    let remoteURL = String('https://');
+    if (process.env['GH_PAT']) {
+      core.info(`✅ Use GH_PAT`);
+      remoteURL = remoteURL.concat(process.env['GH_PAT'].trim());
     } else if (process.env['GITHUB_TOKEN']) {
       core.info(`✅ Use GITHUB_TOKEN`);
-      remote_url = remote_url.concat('x-access-token:', process.env['GITHUB_TOKEN'].trim());
+      remoteURL = remoteURL.concat('x-access-token:', process.env['GITHUB_TOKEN'].trim());
     } else {
-      core.setFailed('❌️ You have to provide a GITHUB_TOKEN or GITHUB_PAT');
+      core.setFailed('You have to provide a GITHUB_TOKEN or GH_PAT');
       return;
     }
-    remote_url = remote_url.concat('@github.com/', repo, '.git');
+    remoteURL = remoteURL.concat('@github.com/', repo, '.git');
+    core.debug(`remoteURL=${remoteURL}`);
 
+    const remoteBranchExists: boolean = await git.remoteBranchExists(remoteURL, targetBranch);
+    core.debug(`remoteBranchExists=${remoteBranchExists}`);
     const tmpdir = fs.mkdtempSync(path.join(os.tmpdir(), 'github-pages-'));
+    core.debug(`tmpdir=${tmpdir}`);
     const currentdir = path.resolve('.');
+    core.debug(`currentdir=${currentdir}`);
+
     process.chdir(tmpdir);
 
-    const remote_branch_exists =
-      child_process.execSync(`git ls-remote --heads ${remote_url} ${target_branch}`, {encoding: 'utf8'}).trim().length >
-      0;
-    if (keep_history && remote_branch_exists) {
-      await exec.exec('git', ['clone', '--quiet', '--branch', target_branch, '--depth', '1', remote_url, '.']);
+    if (keepHistory && remoteBranchExists) {
+      core.info('🌀 Cloning ${repo}');
+      await git.clone(remoteURL, targetBranch, '.');
     } else {
-      core.info(`🏃 Initializing local git repo`);
-      await exec.exec('git', ['init', '.']);
-      await exec.exec('git', ['checkout', '--orphan', target_branch]);
+      core.info(`✨ Initializing local git repo`);
+      await git.init('.');
+      await git.checkout(targetBranch);
     }
 
-    core.info(`🏃 Copying ${path.join(currentdir, build_dir)} contents to ${tmpdir}`);
-    copySync(path.join(currentdir, build_dir), tmpdir);
+    core.info(`🏃 Copying ${path.join(currentdir, buildDir)} contents to ${tmpdir}`);
+    await copySync(path.join(currentdir, buildDir), tmpdir);
 
     if (fqdn) {
       core.info(`✍️ Writing ${fqdn} domain name to ${path.join(tmpdir, 'CNAME')}`);
-      fs.writeFileSync(path.join(tmpdir, 'CNAME'), fqdn.trim());
+      await fs.writeFileSync(path.join(tmpdir, 'CNAME'), fqdn.trim());
     }
 
-    const dirty = child_process.execSync(`git status --short`, {encoding: 'utf8'}).trim().length > 0;
-    if (keep_history && remote_branch_exists && !dirty) {
-      core.info('⚠️ There are no changes to commit, stopping.');
+    const isDirty: boolean = await git.isDirty();
+    core.debug(`isDirty=${isDirty}`);
+    if (keepHistory && remoteBranchExists && !isDirty) {
+      core.info('⚠️ No changes to commit');
       return;
     }
 
-    core.info(`🔨 Configuring git committer to be ${committer_name} <${committer_email}>`);
-    await exec.exec('git', ['config', 'user.name', committer_name]);
-    await exec.exec('git', ['config', 'user.email', committer_email]);
+    const committerPrs: addressparser.Address = addressparser(committer)[0];
+    core.info(`🔨 Configuring git committer as ${committerPrs.name} <${committerPrs.address}>`);
+    await git.setConfig('user.name', committerPrs.name);
+    await git.setConfig('user.email', committerPrs.address);
 
-    try {
-      child_process.execSync('git status --porcelain').toString();
-    } catch (err) {
+    if (!(await git.hasChanges())) {
       core.info('⚠️ Nothing to deploy');
       return;
     }
 
-    await exec.exec('git', ['add', '--all', '.']);
+    core.info(`📐 Updating index of working tree`);
+    await git.add('.');
 
-    let gitCommitCmd: Array<string> = [];
-    gitCommitCmd.push('commit');
-    if (allow_empty_commit) {
+    core.info(`📦 Committing changes`);
+    if (allowEmptyCommit) {
       core.info(`✅ Allow empty commit`);
-      gitCommitCmd.push('--allow-empty');
     }
-    gitCommitCmd.push('-m', commit_message);
-    await exec.exec('git', gitCommitCmd);
+    const authorPrs: addressparser.Address = addressparser(author)[0];
+    core.info(`🔨 Configuring git author as ${authorPrs.name} <${authorPrs.address}>`);
+    await git.commit(allowEmptyCommit, `${authorPrs.name} <${authorPrs.address}>`, commitMessage);
+    await git.showStat(10).then(output => {
+      core.info(output);
+    });
 
-    await exec.exec('git', ['show', '--stat-count=10', 'HEAD']);
-
-    let gitPushCmd: Array<string> = [];
-    gitPushCmd.push('push', '--quiet');
-    if (!keep_history) {
+    core.info(`🏃 Pushing ${buildDir} directory to ${targetBranch} branch on ${repo} repo`);
+    if (!keepHistory) {
       core.info(`✅ Force push`);
-      gitPushCmd.push('--force');
     }
-    gitPushCmd.push(remote_url, target_branch);
-
-    core.info(`🏃 Deploying ${build_dir} directory to ${target_branch} branch on ${repo} repo`);
-    await exec.exec('git', gitPushCmd);
+    await git.push(remoteURL, targetBranch, !keepHistory);
 
     process.chdir(currentdir);
-    core.info(`🎉 Content of ${build_dir} has been deployed to GitHub Pages.`);
+    core.info(`🎉 Content of ${buildDir} has been deployed to GitHub Pages.`);
   } catch (error) {
     core.setFailed(error.message);
   }

@@ -12,7 +12,20 @@ If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitH
 
 ![GitHub Pages](.github/ghaction-github-pages.png)
 
+___
+
+* [Usage](#usage)
+  * [Workflow](#workflow)
+  * [Sign commits](#sign-commits)
+* [Customizing](#customizing)
+  * [inputs](#inputs)
+  * [environment variables](#environment-variables)
+* [How can I help?](#how-can-i-help)
+* [License](#license)
+
 ## Usage
+
+### Workflow
 
 Below is a simple snippet to deploy to GitHub Pages with a dummy HTML page.
 
@@ -56,6 +69,31 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+### Sign commits
+
+You can use the [Import GPG](https://github.com/crazy-max/ghaction-import-gpg) GitHub Action along with this one to sign commits:
+
+```yaml
+      -
+        name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v1
+        with:
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      -
+        name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v1
+        with:
+          target_branch: gh-pages
+          build_dir: public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
 ## Customizing
 
 ### inputs
@@ -69,8 +107,8 @@ Following inputs can be used as `step.with` keys
 | `keep_history`       | Bool    | Create incremental commit instead of doing push force (default `false`)     |
 | `allow_empty_commit` | Bool    | Allow an empty commit to be created (default `true`)                        |
 | `build_dir`          | String  | Build directory to deploy (**required**)                                    |
-| `committer_name`     | String  | Commit author's name  (default [GITHUB_ACTOR](https://help.github.com/en/github/automating-your-workflow-with-github-actions/using-environment-variables#default-environment-variables) or `github-actions`) |
-| `committer_email`    | String  | Commit author's email (default `<committer_name>@users.noreply.github.com`) |
+| `committer`          | String  | Committer name and email address as `Display Name <joe@foo.bar>` (defaults to the GitHub Actions bot user) |
+| `author`             | String  | Author name and email address as `Display Name <joe@foo.bar>` (defaults to the GitHub Actions bot user) |
 | `commit_message`     | String  | Commit message (default `Deploy to GitHub pages`)                           |
 | `fqdn`               | String  | Write the given domain name to the CNAME file                               |
 
@@ -81,7 +119,7 @@ Following environment variables can be used as `step.env` keys
 | Name           | Description                           |
 |----------------|---------------------------------------|
 | `GITHUB_TOKEN` | [GITHUB_TOKEN](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token) as provided by `secrets` |
-| `GITHUB_PAT`   | Use a [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) if you want to deploy to another repo |
+| `GH_PAT`       | Use a [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) if you want to deploy to another repo |
 
 ## How can I help?
 

@@ -1752,6 +1752,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -1760,98 +1763,99 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const child_process = __importStar(__webpack_require__(129));
-const core = __importStar(__webpack_require__(470));
-const exec = __importStar(__webpack_require__(986));
+const addressparser_1 = __importDefault(__webpack_require__(977));
 const fs_extra_1 = __webpack_require__(226);
 const fs = __importStar(__webpack_require__(747));
 const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
+const core = __importStar(__webpack_require__(470));
+const git = __importStar(__webpack_require__(453));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const repo = core.getInput('repo') || process.env['GITHUB_REPOSITORY'] || '';
-            const target_branch = core.getInput('target_branch') || 'gh-pages';
-            const keep_history = /true/i.test(core.getInput('keep_history'));
-            const allow_empty_commit = /true/i.test(core.getInput('allow_empty_commit'));
-            const build_dir = core.getInput('build_dir', { required: true });
-            const committer_name = core.getInput('committer_name') || process.env['GITHUB_ACTOR'] || 'github-actions';
-            const committer_email = core.getInput('committer_email') || `${committer_name}@users.noreply.github.com`;
-            const commit_message = core.getInput('commit_message') || 'Deploy to GitHub pages';
+            const targetBranch = core.getInput('target_branch') || git.defaults.targetBranch;
+            const keepHistory = /true/i.test(core.getInput('keep_history'));
+            const allowEmptyCommit = /true/i.test(core.getInput('allow_empty_commit'));
+            const buildDir = core.getInput('build_dir', { required: true });
+            const committer = core.getInput('committer') || git.defaults.committer;
+            const author = core.getInput('author') || git.defaults.author;
+            const commitMessage = core.getInput('commit_message') || git.defaults.message;
             const fqdn = core.getInput('fqdn');
-            if (!fs.existsSync(build_dir)) {
-                core.setFailed('⛔️ Build dir does not exist');
+            if (!fs.existsSync(buildDir)) {
+                core.setFailed('Build dir does not exist');
                 return;
             }
-            let remote_url = String('https://');
-            if (process.env['GITHUB_PAT']) {
-                core.info(`✅ Use GITHUB_PAT`);
-                remote_url = remote_url.concat(process.env['GITHUB_PAT'].trim());
+            let remoteURL = String('https://');
+            if (process.env['GH_PAT']) {
+                core.info(`✅ Use GH_PAT`);
+                remoteURL = remoteURL.concat(process.env['GH_PAT'].trim());
             }
             else if (process.env['GITHUB_TOKEN']) {
                 core.info(`✅ Use GITHUB_TOKEN`);
-                remote_url = remote_url.concat('x-access-token:', process.env['GITHUB_TOKEN'].trim());
+                remoteURL = remoteURL.concat('x-access-token:', process.env['GITHUB_TOKEN'].trim());
             }
             else {
-                core.setFailed('❌️ You have to provide a GITHUB_TOKEN or GITHUB_PAT');
+                core.setFailed('You have to provide a GITHUB_TOKEN or GH_PAT');
                 return;
             }
-            remote_url = remote_url.concat('@github.com/', repo, '.git');
+            remoteURL = remoteURL.concat('@github.com/', repo, '.git');
+            core.debug(`remoteURL=${remoteURL}`);
+            const remoteBranchExists = yield git.remoteBranchExists(remoteURL, targetBranch);
+            core.debug(`remoteBranchExists=${remoteBranchExists}`);
             const tmpdir = fs.mkdtempSync(path.join(os.tmpdir(), 'github-pages-'));
+            core.debug(`tmpdir=${tmpdir}`);
             const currentdir = path.resolve('.');
+            core.debug(`currentdir=${currentdir}`);
             process.chdir(tmpdir);
-            const remote_branch_exists = child_process.execSync(`git ls-remote --heads ${remote_url} ${target_branch}`, { encoding: 'utf8' }).trim().length >
-                0;
-            if (keep_history && remote_branch_exists) {
-                yield exec.exec('git', ['clone', '--quiet', '--branch', target_branch, '--depth', '1', remote_url, '.']);
+            if (keepHistory && remoteBranchExists) {
+                core.info('🌀 Cloning ${repo}');
+                yield git.clone(remoteURL, targetBranch, '.');
             }
             else {
-                core.info(`🏃 Initializing local git repo`);
-                yield exec.exec('git', ['init', '.']);
-                yield exec.exec('git', ['checkout', '--orphan', target_branch]);
+                core.info(`✨ Initializing local git repo`);
+                yield git.init('.');
+                yield git.checkout(targetBranch);
             }
-            core.info(`🏃 Copying ${path.join(currentdir, build_dir)} contents to ${tmpdir}`);
-            fs_extra_1.copySync(path.join(currentdir, build_dir), tmpdir);
+            core.info(`🏃 Copying ${path.join(currentdir, buildDir)} contents to ${tmpdir}`);
+            yield fs_extra_1.copySync(path.join(currentdir, buildDir), tmpdir);
             if (fqdn) {
                 core.info(`✍️ Writing ${fqdn} domain name to ${path.join(tmpdir, 'CNAME')}`);
-                fs.writeFileSync(path.join(tmpdir, 'CNAME'), fqdn.trim());
+                yield fs.writeFileSync(path.join(tmpdir, 'CNAME'), fqdn.trim());
             }
-            const dirty = child_process.execSync(`git status --short`, { encoding: 'utf8' }).trim().length > 0;
-            if (keep_history && remote_branch_exists && !dirty) {
-                core.info('⚠️ There are no changes to commit, stopping.');
+            const isDirty = yield git.isDirty();
+            core.debug(`isDirty=${isDirty}`);
+            if (keepHistory && remoteBranchExists && !isDirty) {
+                core.info('⚠️ No changes to commit');
                 return;
             }
-            core.info(`🔨 Configuring git committer to be ${committer_name} <${committer_email}>`);
-            yield exec.exec('git', ['config', 'user.name', committer_name]);
-            yield exec.exec('git', ['config', 'user.email', committer_email]);
-            try {
-                child_process.execSync('git status --porcelain').toString();
-            }
-            catch (err) {
+            const committerPrs = addressparser_1.default(committer)[0];
+            core.info(`🔨 Configuring git committer as ${committerPrs.name} <${committerPrs.address}>`);
+            yield git.setConfig('user.name', committerPrs.name);
+            yield git.setConfig('user.email', committerPrs.address);
+            if (!(yield git.hasChanges())) {
                 core.info('⚠️ Nothing to deploy');
                 return;
             }
-            yield exec.exec('git', ['add', '--all', '.']);
-            let gitCommitCmd = [];
-            gitCommitCmd.push('commit');
-            if (allow_empty_commit) {
+            core.info(`📐 Updating index of working tree`);
+            yield git.add('.');
+            core.info(`📦 Committing changes`);
+            if (allowEmptyCommit) {
                 core.info(`✅ Allow empty commit`);
-                gitCommitCmd.push('--allow-empty');
             }
-            gitCommitCmd.push('-m', commit_message);
-            yield exec.exec('git', gitCommitCmd);
-            yield exec.exec('git', ['show', '--stat-count=10', 'HEAD']);
-            let gitPushCmd = [];
-            gitPushCmd.push('push', '--quiet');
-            if (!keep_history) {
+            const authorPrs = addressparser_1.default(author)[0];
+            core.info(`🔨 Configuring git author as ${authorPrs.name} <${authorPrs.address}>`);
+            yield git.commit(allowEmptyCommit, `${authorPrs.name} <${authorPrs.address}>`, commitMessage);
+            yield git.showStat(10).then(output => {
+                core.info(output);
+            });
+            core.info(`🏃 Pushing ${buildDir} directory to ${targetBranch} branch on ${repo} repo`);
+            if (!keepHistory) {
                 core.info(`✅ Force push`);
-                gitPushCmd.push('--force');
             }
-            gitPushCmd.push(remote_url, target_branch);
-            core.info(`🏃 Deploying ${build_dir} directory to ${target_branch} branch on ${repo} repo`);
-            yield exec.exec('git', gitPushCmd);
+            yield git.push(remoteURL, targetBranch, !keepHistory);
             process.chdir(currentdir);
-            core.info(`🎉 Content of ${build_dir} has been deployed to GitHub Pages.`);
+            core.info(`🎉 Content of ${buildDir} has been deployed to GitHub Pages.`);
         }
         catch (error) {
             core.setFailed(error.message);
@@ -1859,7 +1863,7 @@ function run() {
     });
 }
 run();
-
+//# sourceMappingURL=main.js.map
 
 /***/ }),
 
@@ -2413,6 +2417,136 @@ function escapeProperty(s) {
         .replace(/,/g, '%2C');
 }
 //# sourceMappingURL=command.js.map
+
+/***/ }),
+
+/***/ 453:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const exec = __importStar(__webpack_require__(807));
+exports.defaults = {
+    targetBranch: 'gh-pages',
+    committer: 'GitHub <noreply@github.com>',
+    author: 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>',
+    message: 'Deploy to GitHub pages'
+};
+const git = (args = []) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield exec.exec(`git`, args, true).then(res => {
+        if (res.stderr != '' && !res.success) {
+            throw new Error(res.stderr);
+        }
+        return res.stdout.trim();
+    });
+});
+function remoteBranchExists(remoteURL, branch) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield git(['ls-remote', '--heads', remoteURL, branch]).then(output => {
+            return output.trim().length > 0;
+        });
+    });
+}
+exports.remoteBranchExists = remoteBranchExists;
+function clone(remoteURL, branch, dest) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield git(['clone', '--quiet', '--branch', branch, '--depth', '1', remoteURL, dest]);
+    });
+}
+exports.clone = clone;
+function init(dest) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield git(['init', dest]);
+    });
+}
+exports.init = init;
+function checkout(branch) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield git(['checkout', '--orphan', branch]);
+    });
+}
+exports.checkout = checkout;
+function isDirty() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield git(['status', '--short']).then(output => {
+            return output.trim().length > 0;
+        });
+    });
+}
+exports.isDirty = isDirty;
+function hasChanges() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield git(['status', '--porcelain']).then(output => {
+            return output.trim().length > 0;
+        });
+    });
+}
+exports.hasChanges = hasChanges;
+function setConfig(key, value) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield git(['config', key, value]);
+    });
+}
+exports.setConfig = setConfig;
+function add(pattern) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield git(['add', '--all', pattern]);
+    });
+}
+exports.add = add;
+function commit(allowEmptyCommit, author, message) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let args = [];
+        args.push('commit');
+        if (allowEmptyCommit) {
+            args.push('--allow-empty');
+        }
+        if (author !== '') {
+            args.push('--author', author);
+        }
+        args.push('--message', message);
+        yield git(args);
+    });
+}
+exports.commit = commit;
+function showStat(count) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield git(['show', `--stat-count=${count}`, 'HEAD']).then(output => {
+            return output;
+        });
+    });
+}
+exports.showStat = showStat;
+function push(remoteURL, branch, force) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let args = [];
+        args.push('push', '--quiet');
+        if (force) {
+            args.push('--force');
+        }
+        args.push(remoteURL, branch);
+        yield git(args);
+    });
+}
+exports.push = push;
+//# sourceMappingURL=git.js.map
 
 /***/ }),
 
@@ -4270,6 +4404,55 @@ module.exports = {
 
 /***/ }),
 
+/***/ 807:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const actionsExec = __importStar(__webpack_require__(986));
+exports.exec = (command, args = [], silent) => __awaiter(void 0, void 0, void 0, function* () {
+    let stdout = '';
+    let stderr = '';
+    const options = {
+        silent: silent,
+        ignoreReturnCode: true
+    };
+    options.listeners = {
+        stdout: (data) => {
+            stdout += data.toString();
+        },
+        stderr: (data) => {
+            stderr += data.toString();
+        }
+    };
+    const returnCode = yield actionsExec.exec(command, args, options);
+    return {
+        success: returnCode === 0,
+        stdout: stdout.trim(),
+        stderr: stderr.trim()
+    };
+});
+//# sourceMappingURL=exec.js.map
+
+/***/ }),
+
 /***/ 849:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -4735,6 +4918,305 @@ module.exports = {
   symlinkType,
   symlinkTypeSync
 }
+
+
+/***/ }),
+
+/***/ 977:
+/***/ (function(module) {
+
+"use strict";
+
+
+// expose to the world
+module.exports = addressparser;
+
+/**
+ * Parses structured e-mail addresses from an address field
+ *
+ * Example:
+ *
+ *    'Name <address@domain>'
+ *
+ * will be converted to
+ *
+ *     [{name: 'Name', address: 'address@domain'}]
+ *
+ * @param {String} str Address field
+ * @return {Array} An array of address objects
+ */
+function addressparser(str) {
+    var tokenizer = new Tokenizer(str);
+    var tokens = tokenizer.tokenize();
+
+    var addresses = [];
+    var address = [];
+    var parsedAddresses = [];
+
+    tokens.forEach(function (token) {
+        if (token.type === 'operator' && (token.value === ',' || token.value === ';')) {
+            if (address.length) {
+                addresses.push(address);
+            }
+            address = [];
+        } else {
+            address.push(token);
+        }
+    });
+
+    if (address.length) {
+        addresses.push(address);
+    }
+
+    addresses.forEach(function (address) {
+        address = _handleAddress(address);
+        if (address.length) {
+            parsedAddresses = parsedAddresses.concat(address);
+        }
+    });
+
+    return parsedAddresses;
+}
+
+/**
+ * Converts tokens for a single address into an address object
+ *
+ * @param {Array} tokens Tokens object
+ * @return {Object} Address object
+ */
+function _handleAddress(tokens) {
+    var token;
+    var isGroup = false;
+    var state = 'text';
+    var address;
+    var addresses = [];
+    var data = {
+        address: [],
+        comment: [],
+        group: [],
+        text: []
+    };
+    var i;
+    var len;
+
+    // Filter out <addresses>, (comments) and regular text
+    for (i = 0, len = tokens.length; i < len; i++) {
+        token = tokens[i];
+        if (token.type === 'operator') {
+            switch (token.value) {
+                case '<':
+                    state = 'address';
+                    break;
+                case '(':
+                    state = 'comment';
+                    break;
+                case ':':
+                    state = 'group';
+                    isGroup = true;
+                    break;
+                default:
+                    state = 'text';
+            }
+        } else if (token.value) {
+            if (state === 'address') {
+                // handle use case where unquoted name includes a "<"
+                // Apple Mail truncates everything between an unexpected < and an address
+                // and so will we
+                token.value = token.value.replace(/^[^<]*<\s*/, '');
+            }
+            data[state].push(token.value);
+        }
+    }
+
+    // If there is no text but a comment, replace the two
+    if (!data.text.length && data.comment.length) {
+        data.text = data.comment;
+        data.comment = [];
+    }
+
+    if (isGroup) {
+        // http://tools.ietf.org/html/rfc2822#appendix-A.1.3
+        data.text = data.text.join(' ');
+        addresses.push({
+            name: data.text || (address && address.name),
+            group: data.group.length ? addressparser(data.group.join(',')) : []
+        });
+    } else {
+        // If no address was found, try to detect one from regular text
+        if (!data.address.length && data.text.length) {
+            for (i = data.text.length - 1; i >= 0; i--) {
+                if (data.text[i].match(/^[^@\s]+@[^@\s]+$/)) {
+                    data.address = data.text.splice(i, 1);
+                    break;
+                }
+            }
+
+            var _regexHandler = function (address) {
+                if (!data.address.length) {
+                    data.address = [address.trim()];
+                    return ' ';
+                } else {
+                    return address;
+                }
+            };
+
+            // still no address
+            if (!data.address.length) {
+                for (i = data.text.length - 1; i >= 0; i--) {
+                    // fixed the regex to parse email address correctly when email address has more than one @
+                    data.text[i] = data.text[i].replace(/\s*\b[^@\s]+@[^\s]+\b\s*/, _regexHandler).trim();
+                    if (data.address.length) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        // If there's still is no text but a comment exixts, replace the two
+        if (!data.text.length && data.comment.length) {
+            data.text = data.comment;
+            data.comment = [];
+        }
+
+        // Keep only the first address occurence, push others to regular text
+        if (data.address.length > 1) {
+            data.text = data.text.concat(data.address.splice(1));
+        }
+
+        // Join values with spaces
+        data.text = data.text.join(' ');
+        data.address = data.address.join(' ');
+
+        if (!data.address && isGroup) {
+            return [];
+        } else {
+            address = {
+                address: data.address || data.text || '',
+                name: data.text || data.address || ''
+            };
+
+            if (address.address === address.name) {
+                if ((address.address || '').match(/@/)) {
+                    address.name = '';
+                } else {
+                    address.address = '';
+                }
+
+            }
+
+            addresses.push(address);
+        }
+    }
+
+    return addresses;
+}
+
+/**
+ * Creates a Tokenizer object for tokenizing address field strings
+ *
+ * @constructor
+ * @param {String} str Address field string
+ */
+function Tokenizer(str) {
+    this.str = (str || '').toString();
+    this.operatorCurrent = '';
+    this.operatorExpecting = '';
+    this.node = null;
+    this.escaped = false;
+
+    this.list = [];
+}
+
+/**
+ * Operator tokens and which tokens are expected to end the sequence
+ */
+Tokenizer.prototype.operators = {
+    '"': '"',
+    '(': ')',
+    '<': '>',
+    ',': '',
+    ':': ';',
+    // Semicolons are not a legal delimiter per the RFC2822 grammar other
+    // than for terminating a group, but they are also not valid for any
+    // other use in this context.  Given that some mail clients have
+    // historically allowed the semicolon as a delimiter equivalent to the
+    // comma in their UI, it makes sense to treat them the same as a comma
+    // when used outside of a group.
+    ';': ''
+};
+
+/**
+ * Tokenizes the original input string
+ *
+ * @return {Array} An array of operator|text tokens
+ */
+Tokenizer.prototype.tokenize = function () {
+    var chr, list = [];
+    for (var i = 0, len = this.str.length; i < len; i++) {
+        chr = this.str.charAt(i);
+        this.checkChar(chr);
+    }
+
+    this.list.forEach(function (node) {
+        node.value = (node.value || '').toString().trim();
+        if (node.value) {
+            list.push(node);
+        }
+    });
+
+    return list;
+};
+
+/**
+ * Checks if a character is an operator or text and acts accordingly
+ *
+ * @param {String} chr Character from the address field
+ */
+Tokenizer.prototype.checkChar = function (chr) {
+    if ((chr in this.operators || chr === '\\') && this.escaped) {
+        this.escaped = false;
+    } else if (this.operatorExpecting && chr === this.operatorExpecting) {
+        this.node = {
+            type: 'operator',
+            value: chr
+        };
+        this.list.push(this.node);
+        this.node = null;
+        this.operatorExpecting = '';
+        this.escaped = false;
+        return;
+    } else if (!this.operatorExpecting && chr in this.operators) {
+        this.node = {
+            type: 'operator',
+            value: chr
+        };
+        this.list.push(this.node);
+        this.node = null;
+        this.operatorExpecting = this.operators[chr];
+        this.escaped = false;
+        return;
+    }
+
+    if (!this.escaped && chr === '\\') {
+        this.escaped = true;
+        return;
+    }
+
+    if (!this.node) {
+        this.node = {
+            type: 'text',
+            value: ''
+        };
+        this.list.push(this.node);
+    }
+
+    if (this.escaped && chr !== '\\') {
+        this.node.value += '\\';
+    }
+
+    this.node.value += chr;
+    this.escaped = false;
+};
 
 
 /***/ }),
