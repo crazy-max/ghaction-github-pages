@@ -61,7 +61,7 @@ jobs:
       -
         name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v1
+        uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: gh-pages
           build_dir: public
@@ -86,7 +86,7 @@ You can use the [Import GPG](https://github.com/crazy-max/ghaction-import-gpg) G
       -
         name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v1
+        uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: gh-pages
           build_dir: public

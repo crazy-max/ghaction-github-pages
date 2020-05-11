@@ -1855,7 +1855,7 @@ function run() {
             }
             yield git.push(remoteURL, targetBranch, !keepHistory);
             process.chdir(currentdir);
-            core.info(`🎉 Content of ${buildDir} has been deployed to GitHub Pages.`);
+            core.info(`🎉 Content of ${buildDir} has been deployed to GitHub Pages`);
         }
         catch (error) {
             core.setFailed(error.message);
