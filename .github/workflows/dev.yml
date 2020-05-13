@@ -18,21 +18,19 @@ jobs:
         name: Build
         run: |
           npm install
-          npm run format
           npm run build
       -
         name: Set up Git
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name GitHub
+          git config user.email noreply@github.com
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-      -
-        name: Commit and push changes
+      - name: Commit and push changes
         run: |
           git add .
           if output=$(git status --porcelain) && [ ! -z "$output" ]; then
-            git commit -m 'Update generated content'
+            git commit --author "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>" --message "Update generated content"
             git push
           fi
