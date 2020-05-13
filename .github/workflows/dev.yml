@@ -18,6 +18,7 @@ jobs:
         name: Build
         run: |
           npm install
+          npm run format
           npm run build
       -
         name: Set up Git
