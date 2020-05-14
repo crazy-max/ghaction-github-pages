@@ -3,10 +3,12 @@ name: automerge
 on:
   pull_request:
     types:
-      - labeled
-      - unlabeled
-      - synchronize
+      - reopened
       - unlocked
+      - unlabeled
+  pull_request_review:
+    types:
+      - submitted
   check_suite:
     types:
       - completed
@@ -18,29 +20,19 @@ jobs:
     if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
     steps:
       -
-        name: Approve
+        name: Automerge
+        uses: pascalgn/automerge-action@v0.8.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_METHOD: squash
+          MERGE_COMMIT_MESSAGE: automatic
+      -
+        name: Dispatch event
         uses: actions/github-script@0.9.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            await github.pulls.createReview({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number,
-              event: 'APPROVE'
-            })
-      -
-        name: Wait
-        run: sleep 3
-      -
-        name: Merge
-        uses: actions/github-script@0.9.0
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            await github.pulls.merge({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number,
-              merge_method: 'squash'
+            github.repos.createDispatchEvent({
+              ...context.repo,
+              event_type: 'ncc'
             })

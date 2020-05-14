@@ -1,6 +1,9 @@
-name: dev
+name: ncc
 
 on:
+  repository_dispatch:
+    types:
+      - 'ncc'
   push:
     branches:
       - 'dev'
@@ -8,7 +11,7 @@ on:
       - '**.md'
 
 jobs:
-  prune:
+  ncc:
     runs-on: ubuntu-latest
     steps:
       -
@@ -28,7 +31,8 @@ jobs:
           git config user.name GitHub
           git config user.email noreply@github.com
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-      - name: Commit and push changes
+      -
+        name: Commit and push changes
         run: |
           git add .
           if output=$(git status --porcelain) && [ ! -z "$output" ]; then
