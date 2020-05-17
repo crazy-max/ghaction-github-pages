@@ -76,7 +76,7 @@ You can use the [Import GPG](https://github.com/crazy-max/ghaction-import-gpg) G
 ```yaml
       -
         name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v1
+        uses: crazy-max/ghaction-import-gpg@v2
         with:
           git_user_signingkey: true
           git_commit_gpgsign: true
