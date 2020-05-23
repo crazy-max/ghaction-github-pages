@@ -97,7 +97,7 @@ You can use the [Import GPG](https://github.com/crazy-max/ghaction-import-gpg) G
 
 ### Check availability of GitHub Pages
 
-You can use the [GitHub Status](https://github.com/crazy-max/ghaction-github-status) Action along with this check availability of GitHub Pages before deploying:
+You can use the [GitHub Status](https://github.com/crazy-max/ghaction-github-status) Action along with this one to check availability of GitHub Pages before deploying:
 
 ```yaml
       -
