@@ -3,10 +3,11 @@ name: ncc
 on:
   repository_dispatch:
     types:
-      - 'ncc'
+      - ncc
   push:
     branches:
-      - 'dev'
+      - dev
+      - releases/v*
     paths-ignore:
       - '**.md'
 
