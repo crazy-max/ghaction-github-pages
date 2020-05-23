@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1 (2020/05/24)
+
+* Check availability of GitHub Pages through [GitHub Status](https://github.com/crazy-max/ghaction-github-status) Action
+* Update deps
+
 ## 2.0.0 (2020/05/11)
 
 * Add ability to sign commits through [Import GPG](https://github.com/crazy-max/ghaction-import-gpg) GitHub Action
