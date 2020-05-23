@@ -17,6 +17,7 @@ ___
 * [Usage](#usage)
   * [Workflow](#workflow)
   * [Sign commits](#sign-commits)
+  * [Check availability of GitHub Pages](#check-availability-of-github-pages)
 * [Customizing](#customizing)
   * [inputs](#inputs)
   * [environment variables](#environment-variables)
@@ -83,6 +84,27 @@ You can use the [Import GPG](https://github.com/crazy-max/ghaction-import-gpg) G
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      -
+        name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### Check availability of GitHub Pages
+
+You can use the [GitHub Status](https://github.com/crazy-max/ghaction-github-status) Action along with this check availability of GitHub Pages before deploying:
+
+```yaml
+      -
+        name: Check GitHub Pages status
+        uses: crazy-max/ghaction-github-status@v1
+        with:
+          pages_threshold: major_outage
       -
         name: Deploy to GitHub Pages
         if: success()
