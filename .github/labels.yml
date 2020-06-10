@@ -1,4 +1,8 @@
 ## more info https://github.com/crazy-max/ghaction-github-labeler
+- # automerge
+  name: ":bell: automerge"
+  color: "8f4fbc"
+  description: ""
 - # bot
   name: ":robot: bot"
   color: "69cde9"
