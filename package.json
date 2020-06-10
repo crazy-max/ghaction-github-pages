@@ -30,7 +30,7 @@
   "devDependencies": {
     "@actions/io": "^1.0.2",
     "@types/fs-extra": "^9.0.1",
-    "@types/node": "^14.0.12",
+    "@types/node": "^14.0.13",
     "@zeit/ncc": "^0.22.3",
     "prettier": "^2.0.5",
     "removeNPMAbsolutePaths": "^2.0.0",
