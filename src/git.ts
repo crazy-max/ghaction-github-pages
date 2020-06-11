@@ -31,7 +31,7 @@ export async function init(dest: string): Promise<void> {
 }
 
 export async function checkout(branch: string): Promise<void> {
-  await git(['checkout', '--orphan', branch]);
+  await git(['checkout', '-b', branch]);
 }
 
 export async function isDirty(): Promise<boolean> {
