@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0 (2020/06/25)
+
+* Add jekyll input option (#116)
+
 ## 2.0.1 (2020/05/24)
 
 * Check availability of GitHub Pages through [GitHub Status](https://github.com/crazy-max/ghaction-github-status) Action
