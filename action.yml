@@ -37,6 +37,10 @@ inputs:
   fqdn:
     description: 'Write the given domain name to the CNAME file'
     required: false
+  jekyll:
+    description: 'Allow Jekyll to build your site'
+    default: 'true'
+    required: false
 
 runs:
   using: 'node12'

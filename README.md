@@ -133,6 +133,7 @@ Following inputs can be used as `step.with` keys
 | `author`             | String  | Author name and email address as `Display Name <joe@foo.bar>` (defaults to the GitHub Actions bot user) |
 | `commit_message`     | String  | Commit message (default `Deploy to GitHub pages`)                           |
 | `fqdn`               | String  | Write the given domain name to the CNAME file                               |
+| `jekyll`             | Bool    | Allow Jekyll to build your site (default `true`)                            |
 
 ### environment variables
 
