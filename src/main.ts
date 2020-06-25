@@ -17,7 +17,7 @@ async function run() {
     const author: string = core.getInput('author') || git.defaults.author;
     const commitMessage: string = core.getInput('commit_message') || git.defaults.message;
     const fqdn: string = core.getInput('fqdn');
-    const jekyll: boolean = /false/i.test(core.getInput('jekyll'));
+    const nojekyll: boolean = /false/i.test(core.getInput('jekyll'));
 
     if (!fs.existsSync(buildDir)) {
       core.setFailed('Build dir does not exist');
@@ -64,7 +64,7 @@ async function run() {
       await fs.writeFileSync(path.join(tmpdir, 'CNAME'), fqdn.trim());
     }
 
-    if (jekyll) {
+    if (nojekyll) {
       core.info(`🚫 Disabling Jekyll support via ${path.join(tmpdir, '.nojekyll')}`);
       await fs.writeFileSync(path.join(tmpdir, '.nojekyll'), '');
     }

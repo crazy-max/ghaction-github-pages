@@ -1799,7 +1799,7 @@ function run() {
             const author = core.getInput('author') || git.defaults.author;
             const commitMessage = core.getInput('commit_message') || git.defaults.message;
             const fqdn = core.getInput('fqdn');
-            const jekyll = /false/i.test(core.getInput('jekyll'));
+            const nojekyll = /false/i.test(core.getInput('jekyll'));
             if (!fs.existsSync(buildDir)) {
                 core.setFailed('Build dir does not exist');
                 return;
@@ -1841,7 +1841,7 @@ function run() {
                 core.info(`✍️ Writing ${fqdn} domain name to ${path.join(tmpdir, 'CNAME')}`);
                 yield fs.writeFileSync(path.join(tmpdir, 'CNAME'), fqdn.trim());
             }
-            if (jekyll) {
+            if (nojekyll) {
                 core.info(`🚫 Disabling Jekyll support via ${path.join(tmpdir, '.nojekyll')}`);
                 yield fs.writeFileSync(path.join(tmpdir, '.nojekyll'), '');
             }
