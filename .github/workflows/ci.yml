@@ -31,6 +31,11 @@ jobs:
           </html>
           EOL
       -
+        name: Check GitHub Pages status
+        uses: crazy-max/ghaction-github-status@v1
+        with:
+          pages_threshold: major_outage
+      -
         name: Deploy
         if: success()
         uses: ./
