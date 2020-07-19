@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1 (2020/07/19)
+
+* Fix cloning repo log
+
 ## 2.1.0 (2020/06/25)
 
 * Add jekyll input option (#116)

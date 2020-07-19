@@ -1827,7 +1827,7 @@ function run() {
             core.debug(`currentdir=${currentdir}`);
             process.chdir(tmpdir);
             if (keepHistory && remoteBranchExists) {
-                core.info('🌀 Cloning ${repo}');
+                core.info(`🌀 Cloning ${repo}`);
                 yield git.clone(remoteURL, targetBranch, '.');
             }
             else {
