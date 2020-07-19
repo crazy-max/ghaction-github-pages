@@ -48,7 +48,7 @@ async function run() {
     process.chdir(tmpdir);
 
     if (keepHistory && remoteBranchExists) {
-      core.info('🌀 Cloning ${repo}');
+      core.info(`🌀 Cloning ${repo}`);
       await git.clone(remoteURL, targetBranch, '.');
     } else {
       core.info(`✨ Initializing local git repo`);
