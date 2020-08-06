@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.2 (2020/08/06)
+
+* Dereference symlinks (#121)
+
 ## 2.1.1 (2020/07/19)
 
 * Fix cloning repo log
