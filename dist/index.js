@@ -1836,7 +1836,9 @@ function run() {
                 yield git.checkout(targetBranch);
             }
             core.info(`🏃 Copying ${path.join(currentdir, buildDir)} contents to ${tmpdir}`);
-            yield fs_extra_1.copySync(path.join(currentdir, buildDir), tmpdir);
+            yield fs_extra_1.copySync(path.join(currentdir, buildDir), tmpdir, {
+                dereference: true
+            });
             if (fqdn) {
                 core.info(`✍️ Writing ${fqdn} domain name to ${path.join(tmpdir, 'CNAME')}`);
                 yield fs.writeFileSync(path.join(tmpdir, 'CNAME'), fqdn.trim());

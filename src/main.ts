@@ -57,7 +57,9 @@ async function run() {
     }
 
     core.info(`🏃 Copying ${path.join(currentdir, buildDir)} contents to ${tmpdir}`);
-    await copySync(path.join(currentdir, buildDir), tmpdir);
+    await copySync(path.join(currentdir, buildDir), tmpdir, {
+      dereference: true
+    });
 
     if (fqdn) {
       core.info(`✍️ Writing ${fqdn} domain name to ${path.join(tmpdir, 'CNAME')}`);
