@@ -78,13 +78,12 @@ You can use the [Import GPG](https://github.com/crazy-max/ghaction-import-gpg) G
 ```yaml
       -
         name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v2
+        uses: crazy-max/ghaction-import-gpg@v3
         with:
-          git_user_signingkey: true
-          git_commit_gpgsign: true
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git-user-signingkey: true
+          git-commit-gpgsign: true
       -
         name: Deploy to GitHub Pages
         if: success()
