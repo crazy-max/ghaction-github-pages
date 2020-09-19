@@ -102,7 +102,7 @@ You can use the [GitHub Status](https://github.com/crazy-max/ghaction-github-sta
 ```yaml
       -
         name: Check GitHub Pages status
-        uses: crazy-max/ghaction-github-status@v1
+        uses: crazy-max/ghaction-github-status@v2
         with:
           pages_threshold: major_outage
       -
