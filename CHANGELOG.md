@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.3 (2020/10/01)
+
+* Fix CVE-2020-15228
+
 ## 2.1.2 (2020/08/06)
 
 * Dereference symlinks (#121)
