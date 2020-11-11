@@ -183,9 +183,9 @@ function commit(allowEmptyCommit, author, message) {
     });
 }
 exports.commit = commit;
-function showStat(count) {
+function showStat() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield git(['show', `--stat-count=${count}`, 'HEAD']).then(output => {
+        return yield git(['show', `--stat-count=2000`, 'HEAD']).then(output => {
             return output;
         });
     });
@@ -301,6 +301,8 @@ function run() {
             }
             core.info(`🏃 Copying ${path.join(currentdir, buildDir)} contents to ${tmpdir}`);
             yield fs_extra_1.copySync(path.join(currentdir, buildDir), tmpdir, {
+                overwrite: true,
+                errorOnExist: false,
                 dereference: true
             });
             if (fqdn) {
@@ -327,16 +329,16 @@ function run() {
             }
             core.info(`📐 Updating index of working tree`);
             yield git.add('.');
-            core.info(`📦 Committing changes`);
             if (allowEmptyCommit) {
                 core.info(`✅ Allow empty commit`);
             }
             const authorPrs = addressparser_1.default(author)[0];
-            core.info(`🔨 Configuring git author as ${authorPrs.name} <${authorPrs.address}>`);
+            core.startGroup(`📦 Committing changes as ${authorPrs.name} <${authorPrs.address}> author`);
             yield git.commit(allowEmptyCommit, `${authorPrs.name} <${authorPrs.address}>`, commitMessage);
-            yield git.showStat(10).then(output => {
+            yield git.showStat().then(output => {
                 core.info(output);
             });
+            core.endGroup();
             core.info(`🏃 Pushing ${buildDir} directory to ${targetBranch} branch on ${repo} repo`);
             if (!keepHistory) {
                 core.info(`✅ Force push`);

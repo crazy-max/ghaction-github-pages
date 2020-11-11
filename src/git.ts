@@ -67,8 +67,8 @@ export async function commit(allowEmptyCommit: boolean, author: string, message:
   await git(args);
 }
 
-export async function showStat(count: number): Promise<string> {
-  return await git(['show', `--stat-count=${count}`, 'HEAD']).then(output => {
+export async function showStat(): Promise<string> {
+  return await git(['show', `--stat-count=2000`, 'HEAD']).then(output => {
     return output;
   });
 }

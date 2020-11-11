@@ -58,6 +58,8 @@ async function run() {
 
     core.info(`🏃 Copying ${path.join(currentdir, buildDir)} contents to ${tmpdir}`);
     await copySync(path.join(currentdir, buildDir), tmpdir, {
+      overwrite: true,
+      errorOnExist: false,
       dereference: true
     });
 
@@ -91,16 +93,17 @@ async function run() {
     core.info(`📐 Updating index of working tree`);
     await git.add('.');
 
-    core.info(`📦 Committing changes`);
     if (allowEmptyCommit) {
       core.info(`✅ Allow empty commit`);
     }
+
     const authorPrs: addressparser.Address = addressparser(author)[0];
-    core.info(`🔨 Configuring git author as ${authorPrs.name} <${authorPrs.address}>`);
+    core.startGroup(`📦 Committing changes as ${authorPrs.name} <${authorPrs.address}> author`);
     await git.commit(allowEmptyCommit, `${authorPrs.name} <${authorPrs.address}>`, commitMessage);
-    await git.showStat(10).then(output => {
+    await git.showStat().then(output => {
       core.info(output);
     });
+    core.endGroup();
 
     core.info(`🏃 Pushing ${buildDir} directory to ${targetBranch} branch on ${repo} repo`);
     if (!keepHistory) {

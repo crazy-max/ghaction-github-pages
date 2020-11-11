@@ -19,6 +19,7 @@ jobs:
         name: Gen dummy page
         run: |
           mkdir public
+          touch public/file{0001..3000}
           cat > public/index.html <<EOL
           <!doctype html>
           <html>
