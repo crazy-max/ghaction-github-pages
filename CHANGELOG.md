@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.0 (2020/11/12)
+
+* Use native copy (#129)
+* Warning message on unresolved symlinks
+* Show diff
+
 ## 2.1.3 (2020/10/01)
 
 * Fix CVE-2020-15228
