@@ -1,10 +1,10 @@
 import addressparser from 'addressparser';
-import {copySync} from 'fs-extra';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import * as core from '@actions/core';
 import * as git from './git';
+import * as util from './util';
 
 async function run() {
   try {
@@ -26,10 +26,10 @@ async function run() {
 
     let remoteURL = String('https://');
     if (process.env['GH_PAT']) {
-      core.info(`✅ Use GH_PAT`);
+      core.debug(`Use GH_PAT`);
       remoteURL = remoteURL.concat(process.env['GH_PAT'].trim());
     } else if (process.env['GITHUB_TOKEN']) {
-      core.info(`✅ Use GITHUB_TOKEN`);
+      core.debug(`Use GITHUB_TOKEN`);
       remoteURL = remoteURL.concat('x-access-token:', process.env['GITHUB_TOKEN'].trim());
     } else {
       core.setFailed('You have to provide a GITHUB_TOKEN or GH_PAT');
@@ -56,11 +56,8 @@ async function run() {
       await git.checkout(targetBranch);
     }
 
-    core.info(`🏃 Copying ${path.join(currentdir, buildDir)} contents to ${tmpdir}`);
-    await copySync(path.join(currentdir, buildDir), tmpdir, {
-      overwrite: true,
-      errorOnExist: false,
-      dereference: true
+    await core.group(`🏃 Copying ${path.join(currentdir, buildDir)} contents to ${tmpdir}`, async () => {
+      await util.copyDir(path.join(currentdir, buildDir), tmpdir);
     });
 
     if (fqdn) {
@@ -94,20 +91,20 @@ async function run() {
     await git.add('.');
 
     if (allowEmptyCommit) {
-      core.info(`✅ Allow empty commit`);
+      core.debug(`Allow empty commit`);
     }
 
     const authorPrs: addressparser.Address = addressparser(author)[0];
-    core.startGroup(`📦 Committing changes as ${authorPrs.name} <${authorPrs.address}> author`);
-    await git.commit(allowEmptyCommit, `${authorPrs.name} <${authorPrs.address}>`, commitMessage);
-    await git.showStat().then(output => {
-      core.info(output);
+    await core.group(`📦 Committing changes as ${authorPrs.name} <${authorPrs.address}> author`, async () => {
+      await git.commit(allowEmptyCommit, `${authorPrs.name} <${authorPrs.address}>`, commitMessage);
+      await git.showStat().then(output => {
+        core.info(output);
+      });
     });
-    core.endGroup();
 
     core.info(`🏃 Pushing ${buildDir} directory to ${targetBranch} branch on ${repo} repo`);
     if (!keepHistory) {
-      core.info(`✅ Force push`);
+      core.debug(`Force push`);
     }
     await git.push(remoteURL, targetBranch, !keepHistory);
 
