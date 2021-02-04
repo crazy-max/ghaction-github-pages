@@ -143,6 +143,7 @@ Following environment variables can be used as `step.env` keys
 |----------------|---------------------------------------|
 | `GITHUB_TOKEN` | [GITHUB_TOKEN](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token) as provided by `secrets` |
 | `GH_PAT`       | Use a [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) if you want to deploy to another repo |
+| `GIT_DOMAIN`   | Use another domain. Default `github.com` |
 
 ## Keep up-to-date with GitHub Dependabot
 
