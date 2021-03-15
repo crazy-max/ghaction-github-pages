@@ -253,6 +253,7 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const repo = core.getInput('repo') || process.env['GITHUB_REPOSITORY'] || '';
+            const domain = process.env['GIT_DOMAIN'] || 'github.com';
             const targetBranch = core.getInput('target_branch') || git.defaults.targetBranch;
             const keepHistory = /true/i.test(core.getInput('keep_history'));
             const allowEmptyCommit = /true/i.test(core.getInput('allow_empty_commit'));
@@ -279,7 +280,7 @@ function run() {
                 core.setFailed('You have to provide a GITHUB_TOKEN or GH_PAT');
                 return;
             }
-            remoteURL = remoteURL.concat('@github.com/', repo, '.git');
+            remoteURL = remoteURL.concat('@', domain, '/', repo, '.git');
             core.debug(`remoteURL=${remoteURL}`);
             const remoteBranchExists = yield git.remoteBranchExists(remoteURL, targetBranch);
             core.debug(`remoteBranchExists=${remoteBranchExists}`);
