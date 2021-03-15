@@ -7,8 +7,12 @@ branding:
   icon: 'upload-cloud'
 
 inputs:
+  domain:
+    description: 'Git domain (default github.com)'
+    required: false
+    default: 'github.com'
   repo:
-    description: 'GitHub repository where assets will be deployed (default current)'
+    description: 'GitHub repository where assets will be deployed (default $GITHUB_REPOSITORY)'
     required: false
   target_branch:
     description: 'Git branch where assets will be deployed'

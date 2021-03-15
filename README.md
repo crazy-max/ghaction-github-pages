@@ -31,7 +31,8 @@ ___
 
 Below is a simple snippet to deploy to GitHub Pages with a dummy HTML page.
 
-A [workflow](https://github.com/crazy-max/ghaction-github-pages/actions?query=workflow%3Aci) is also available for this repository and deploys [everyday to GitHub pages](https://crazy-max.github.io/ghaction-github-pages/).
+A [workflow](https://github.com/crazy-max/ghaction-github-pages/actions?query=workflow%3Aci) is also available for
+this repository and deploys [everyday to GitHub pages](https://crazy-max.github.io/ghaction-github-pages/).
 
 ```yaml
 name: website
@@ -73,7 +74,8 @@ jobs:
 
 ### Sign commits
 
-You can use the [Import GPG](https://github.com/crazy-max/ghaction-import-gpg) GitHub Action along with this one to sign commits:
+You can use the [Import GPG](https://github.com/crazy-max/ghaction-import-gpg) GitHub Action along with this one to
+sign commits:
 
 ```yaml
       -
@@ -97,7 +99,8 @@ You can use the [Import GPG](https://github.com/crazy-max/ghaction-import-gpg) G
 
 ### Check availability of GitHub Pages
 
-You can use the [GitHub Status](https://github.com/crazy-max/ghaction-github-status) Action along with this one to check availability of GitHub Pages before deploying:
+You can use the [GitHub Status](https://github.com/crazy-max/ghaction-github-status) Action along with this one to
+check availability of GitHub Pages before deploying:
 
 ```yaml
       -
@@ -122,18 +125,19 @@ You can use the [GitHub Status](https://github.com/crazy-max/ghaction-github-sta
 
 Following inputs can be used as `step.with` keys
 
-| Name                 | Type    | Description                                                                 |
-|----------------------|---------|-----------------------------------------------------------------------------|
-| `repo`               | String  | GitHub repository where assets will be deployed (default current)           |
-| `target_branch`      | String  | Git branch where assets will be deployed (default `gh-pages`)               |
-| `keep_history`       | Bool    | Create incremental commit instead of doing push force (default `false`)     |
-| `allow_empty_commit` | Bool    | Allow an empty commit to be created (default `true`)                        |
-| `build_dir`          | String  | Build directory to deploy (**required**)                                    |
+| Name                 | Type    | Description                                                                    |
+|----------------------|---------|--------------------------------------------------------------------------------|
+| `domain`             | String  | Git domain (default `github.com`)                                              |
+| `repo`               | String  | GitHub repository where assets will be deployed (default `$GITHUB_REPOSITORY`) |
+| `target_branch`      | String  | Git branch where assets will be deployed (default `gh-pages`)                  |
+| `keep_history`       | Bool    | Create incremental commit instead of doing push force (default `false`)        |
+| `allow_empty_commit` | Bool    | Allow an empty commit to be created (default `true`)                           |
+| `build_dir`          | String  | Build directory to deploy (**required**)                                       |
 | `committer`          | String  | Committer name and email address as `Display Name <joe@foo.bar>` (defaults to the GitHub Actions bot user) |
 | `author`             | String  | Author name and email address as `Display Name <joe@foo.bar>` (defaults to the GitHub Actions bot user) |
-| `commit_message`     | String  | Commit message (default `Deploy to GitHub pages`)                           |
-| `fqdn`               | String  | Write the given domain name to the CNAME file                               |
-| `jekyll`             | Bool    | Allow Jekyll to build your site (default `true`)                            |
+| `commit_message`     | String  | Commit message (default `Deploy to GitHub pages`)                              |
+| `fqdn`               | String  | Write the given domain name to the CNAME file                                  |
+| `jekyll`             | Bool    | Allow Jekyll to build your site (default `true`)                               |
 
 ### environment variables
 
@@ -143,7 +147,6 @@ Following environment variables can be used as `step.env` keys
 |----------------|---------------------------------------|
 | `GITHUB_TOKEN` | [GITHUB_TOKEN](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token) as provided by `secrets` |
 | `GH_PAT`       | Use a [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) if you want to deploy to another repo |
-| `GIT_DOMAIN`   | Use another domain. Default `github.com` |
 
 ## Keep up-to-date with GitHub Dependabot
 
@@ -163,7 +166,10 @@ updates:
 
 ## How can I help?
 
-All kinds of contributions are welcome :raised_hands:! The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon: You can also support this project by [**becoming a sponsor on GitHub**](https://github.com/sponsors/crazy-max) :clap: or by making a [Paypal donation](https://www.paypal.me/crazyws) to ensure this journey continues indefinitely! :rocket:
+All kinds of contributions are welcome :raised_hands:! The most basic way to show your support is to star :star2:
+the project, or to raise issues :speech_balloon: You can also support this project by
+[**becoming a sponsor on GitHub**](https://github.com/sponsors/crazy-max) :clap: or by making a
+[Paypal donation](https://www.paypal.me/crazyws) to ensure this journey continues indefinitely! :rocket:
 
 Thanks again for your support, it is much appreciated! :pray:
 

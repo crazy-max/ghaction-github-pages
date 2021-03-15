@@ -8,8 +8,8 @@ import * as util from './util';
 
 async function run() {
   try {
+    const domain: string = core.getInput('domain') || 'github.com';
     const repo: string = core.getInput('repo') || process.env['GITHUB_REPOSITORY'] || '';
-    const domain: string = process.env['GIT_DOMAIN'] || 'github.com';
     const targetBranch: string = core.getInput('target_branch') || git.defaults.targetBranch;
     const keepHistory: boolean = /true/i.test(core.getInput('keep_history'));
     const allowEmptyCommit: boolean = /true/i.test(core.getInput('allow_empty_commit'));
