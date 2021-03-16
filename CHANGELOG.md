@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0 (2021/03/16)
+
+* Bring back copySync (#135)
+* Container based developer flow (#134)
+* Add `domain` input (#133)
+
 ## 2.2.0 (2020/11/12)
 
 * Use native copy (#129)
