@@ -1,10 +1,10 @@
 import addressparser from 'addressparser';
+import {copySync} from 'fs-extra';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import * as core from '@actions/core';
 import * as git from './git';
-import * as util from './util';
 
 async function run() {
   try {
@@ -57,8 +57,11 @@ async function run() {
       await git.checkout(targetBranch);
     }
 
-    await core.group(`🏃 Copying ${path.join(currentdir, buildDir)} contents to ${tmpdir}`, async () => {
-      await util.copyDir(path.join(currentdir, buildDir), tmpdir);
+    core.info(`🏃 Copying ${path.join(currentdir, buildDir)} contents to ${tmpdir}`);
+    await copySync(path.join(currentdir, buildDir), tmpdir, {
+      overwrite: true,
+      errorOnExist: false,
+      dereference: true
     });
 
     if (fqdn) {
