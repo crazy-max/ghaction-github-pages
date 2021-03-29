@@ -1,4 +1,2 @@
-/.dev
-/dist
-/lib
+/coverage
 /node_modules
