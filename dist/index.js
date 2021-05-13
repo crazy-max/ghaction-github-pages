@@ -167,7 +167,7 @@ function setConfig(key, value) {
 exports.setConfig = setConfig;
 function add(pattern) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield exec.exec('git', ['add', '--all', pattern]);
+        yield exec.exec('git', ['add', '--verbose', '--all', pattern]);
     });
 }
 exports.add = add;
@@ -200,7 +200,7 @@ exports.showStat = showStat;
 function push(remoteURL, branch, force) {
     return __awaiter(this, void 0, void 0, function* () {
         let args = [];
-        args.push('push', '--quiet');
+        args.push('push');
         if (force) {
             args.push('--force');
         }

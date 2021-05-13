@@ -52,7 +52,7 @@ export async function setConfig(key: string, value: string): Promise<void> {
 }
 
 export async function add(pattern: string): Promise<void> {
-  await exec.exec('git', ['add', '--all', pattern]);
+  await exec.exec('git', ['add', '--verbose', '--all', pattern]);
 }
 
 export async function commit(allowEmptyCommit: boolean, author: string, message: string): Promise<void> {
@@ -79,7 +79,7 @@ export async function showStat(): Promise<string> {
 
 export async function push(remoteURL: string, branch: string, force: boolean): Promise<void> {
   let args: Array<string> = [];
-  args.push('push', '--quiet');
+  args.push('push');
   if (force) {
     args.push('--force');
   }
