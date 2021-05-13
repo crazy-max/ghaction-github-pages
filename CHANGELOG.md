@@ -1,6 +1,10 @@
 # Changelog
 
-## 2.4.0 (2021/03/16)
+## 2.4.1 (2021/03/13)
+
+* Verbose output
+
+## 2.4.0 (2021/05/13)
 
 * Add `dry-run` input (#144)
 * Refactor logging output
