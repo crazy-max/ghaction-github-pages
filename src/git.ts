@@ -1,4 +1,5 @@
-import * as exec from './exec';
+import * as mexec from './exec';
+import * as exec from '@actions/exec';
 
 export const defaults = {
   targetBranch: 'gh-pages',
@@ -7,51 +8,51 @@ export const defaults = {
   message: 'Deploy to GitHub pages'
 };
 
-const git = async (args: string[] = []): Promise<string> => {
-  return await exec.exec(`git`, args, true).then(res => {
+export async function remoteBranchExists(remoteURL: string, branch: string): Promise<boolean> {
+  return await mexec.exec('git', ['ls-remote', '--heads', remoteURL, branch], true).then(res => {
     if (res.stderr != '' && !res.success) {
       throw new Error(res.stderr);
     }
-    return res.stdout.trim();
-  });
-};
-
-export async function remoteBranchExists(remoteURL: string, branch: string): Promise<boolean> {
-  return await git(['ls-remote', '--heads', remoteURL, branch]).then(output => {
-    return output.trim().length > 0;
+    return res.stdout.trim().length > 0;
   });
 }
 
 export async function clone(remoteURL: string, branch: string, dest: string): Promise<void> {
-  await git(['clone', '--quiet', '--branch', branch, '--depth', '1', remoteURL, dest]);
+  await exec.exec('git', ['clone', '--quiet', '--branch', branch, '--depth', '1', remoteURL, dest]);
 }
 
 export async function init(dest: string): Promise<void> {
-  await git(['init', dest]);
+  await exec.exec('git', ['init', dest]);
 }
 
 export async function checkout(branch: string): Promise<void> {
-  await git(['checkout', '--orphan', branch]);
+  await exec.exec('git', ['checkout', '--orphan', branch]);
 }
 
 export async function isDirty(): Promise<boolean> {
-  return await git(['status', '--short']).then(output => {
-    return output.trim().length > 0;
+  return await mexec.exec('git', ['status', '--short'], true).then(res => {
+    if (res.stderr != '' && !res.success) {
+      throw new Error(res.stderr);
+    }
+    return res.stdout.trim().length > 0;
   });
 }
 
 export async function hasChanges(): Promise<boolean> {
-  return await git(['status', '--porcelain']).then(output => {
-    return output.trim().length > 0;
+  return await mexec.exec('git', ['status', '--porcelain'], true).then(res => {
+    if (res.stderr != '' && !res.success) {
+      throw new Error(res.stderr);
+    }
+    return res.stdout.trim().length > 0;
   });
 }
 
 export async function setConfig(key: string, value: string): Promise<void> {
-  await git(['config', key, value]);
+  await exec.exec('git', ['config', key, value]);
 }
 
 export async function add(pattern: string): Promise<void> {
-  await git(['add', '--all', pattern]);
+  await exec.exec('git', ['add', '--all', pattern]);
 }
 
 export async function commit(allowEmptyCommit: boolean, author: string, message: string): Promise<void> {
@@ -64,12 +65,15 @@ export async function commit(allowEmptyCommit: boolean, author: string, message:
     args.push('--author', author);
   }
   args.push('--message', message);
-  await git(args);
+  await exec.exec('git', args);
 }
 
 export async function showStat(): Promise<string> {
-  return await git(['show', `--stat-count=2000`, 'HEAD']).then(output => {
-    return output;
+  return await mexec.exec('git', ['show', `--stat-count=2000`, 'HEAD'], true).then(res => {
+    if (res.stderr != '' && !res.success) {
+      throw new Error(res.stderr);
+    }
+    return res.stdout.trim();
   });
 }
 
@@ -80,5 +84,5 @@ export async function push(remoteURL: string, branch: string, force: boolean): P
     args.push('--force');
   }
   args.push(remoteURL, branch);
-  await git(args);
+  await exec.exec('git', args);
 }

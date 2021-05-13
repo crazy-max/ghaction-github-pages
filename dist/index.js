@@ -100,72 +100,74 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.push = exports.showStat = exports.commit = exports.add = exports.setConfig = exports.hasChanges = exports.isDirty = exports.checkout = exports.init = exports.clone = exports.remoteBranchExists = exports.defaults = void 0;
-const exec = __importStar(__webpack_require__(7757));
+const mexec = __importStar(__webpack_require__(7757));
+const exec = __importStar(__webpack_require__(1514));
 exports.defaults = {
     targetBranch: 'gh-pages',
     committer: 'GitHub <noreply@github.com>',
     author: 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>',
     message: 'Deploy to GitHub pages'
 };
-const git = (args = []) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield exec.exec(`git`, args, true).then(res => {
-        if (res.stderr != '' && !res.success) {
-            throw new Error(res.stderr);
-        }
-        return res.stdout.trim();
-    });
-});
 function remoteBranchExists(remoteURL, branch) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield git(['ls-remote', '--heads', remoteURL, branch]).then(output => {
-            return output.trim().length > 0;
+        return yield mexec.exec('git', ['ls-remote', '--heads', remoteURL, branch], true).then(res => {
+            if (res.stderr != '' && !res.success) {
+                throw new Error(res.stderr);
+            }
+            return res.stdout.trim().length > 0;
         });
     });
 }
 exports.remoteBranchExists = remoteBranchExists;
 function clone(remoteURL, branch, dest) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield git(['clone', '--quiet', '--branch', branch, '--depth', '1', remoteURL, dest]);
+        yield exec.exec('git', ['clone', '--quiet', '--branch', branch, '--depth', '1', remoteURL, dest]);
     });
 }
 exports.clone = clone;
 function init(dest) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield git(['init', dest]);
+        yield exec.exec('git', ['init', dest]);
     });
 }
 exports.init = init;
 function checkout(branch) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield git(['checkout', '--orphan', branch]);
+        yield exec.exec('git', ['checkout', '--orphan', branch]);
     });
 }
 exports.checkout = checkout;
 function isDirty() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield git(['status', '--short']).then(output => {
-            return output.trim().length > 0;
+        return yield mexec.exec('git', ['status', '--short'], true).then(res => {
+            if (res.stderr != '' && !res.success) {
+                throw new Error(res.stderr);
+            }
+            return res.stdout.trim().length > 0;
         });
     });
 }
 exports.isDirty = isDirty;
 function hasChanges() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield git(['status', '--porcelain']).then(output => {
-            return output.trim().length > 0;
+        return yield mexec.exec('git', ['status', '--porcelain'], true).then(res => {
+            if (res.stderr != '' && !res.success) {
+                throw new Error(res.stderr);
+            }
+            return res.stdout.trim().length > 0;
         });
     });
 }
 exports.hasChanges = hasChanges;
 function setConfig(key, value) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield git(['config', key, value]);
+        yield exec.exec('git', ['config', key, value]);
     });
 }
 exports.setConfig = setConfig;
 function add(pattern) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield git(['add', '--all', pattern]);
+        yield exec.exec('git', ['add', '--all', pattern]);
     });
 }
 exports.add = add;
@@ -180,14 +182,17 @@ function commit(allowEmptyCommit, author, message) {
             args.push('--author', author);
         }
         args.push('--message', message);
-        yield git(args);
+        yield exec.exec('git', args);
     });
 }
 exports.commit = commit;
 function showStat() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield git(['show', `--stat-count=2000`, 'HEAD']).then(output => {
-            return output;
+        return yield mexec.exec('git', ['show', `--stat-count=2000`, 'HEAD'], true).then(res => {
+            if (res.stderr != '' && !res.success) {
+                throw new Error(res.stderr);
+            }
+            return res.stdout.trim();
         });
     });
 }
@@ -200,7 +205,7 @@ function push(remoteURL, branch, force) {
             args.push('--force');
         }
         args.push(remoteURL, branch);
-        yield git(args);
+        yield exec.exec('git', args);
     });
 }
 exports.push = push;
@@ -266,6 +271,7 @@ function run() {
             const commitMessage = core.getInput('commit_message') || git.defaults.message;
             const fqdn = core.getInput('fqdn');
             const nojekyll = /false/i.test(core.getInput('jekyll'));
+            const dryRun = /true/i.test(core.getInput('dry-run'));
             if (!fs.existsSync(buildDir)) {
                 core.setFailed('Build dir does not exist');
                 return;
@@ -273,17 +279,17 @@ function run() {
             let remoteURL = String('https://');
             if (process.env['GH_PAT']) {
                 core.debug(`Use GH_PAT`);
-                remoteURL = remoteURL.concat(process.env['GH_PAT'].trim());
+                remoteURL = remoteURL.concat(process.env['GH_PAT'].trim(), '@');
             }
             else if (process.env['GITHUB_TOKEN']) {
                 core.debug(`Use GITHUB_TOKEN`);
-                remoteURL = remoteURL.concat('x-access-token:', process.env['GITHUB_TOKEN'].trim());
+                remoteURL = remoteURL.concat('x-access-token:', process.env['GITHUB_TOKEN'].trim(), '@');
             }
-            else {
+            else if (!dryRun) {
                 core.setFailed('You have to provide a GITHUB_TOKEN or GH_PAT');
                 return;
             }
-            remoteURL = remoteURL.concat('@', domain, '/', repo, '.git');
+            remoteURL = remoteURL.concat(domain, '/', repo, '.git');
             core.debug(`remoteURL=${remoteURL}`);
             const remoteBranchExists = yield git.remoteBranchExists(remoteURL, targetBranch);
             core.debug(`remoteBranchExists=${remoteBranchExists}`);
@@ -293,61 +299,72 @@ function run() {
             core.debug(`currentdir=${currentdir}`);
             process.chdir(tmpdir);
             if (keepHistory && remoteBranchExists) {
-                core.info(`🌀 Cloning ${repo}`);
+                core.startGroup(`Cloning ${repo}`);
                 yield git.clone(remoteURL, targetBranch, '.');
+                core.endGroup();
             }
             else {
-                core.info(`✨ Initializing local git repo`);
+                core.startGroup(`Initializing local git repo`);
                 yield git.init('.');
                 yield git.checkout(targetBranch);
+                core.endGroup();
             }
-            core.info(`🏃 Copying ${path.join(currentdir, buildDir)} contents to ${tmpdir}`);
-            yield fs_extra_1.copySync(path.join(currentdir, buildDir), tmpdir, {
-                overwrite: true,
-                errorOnExist: false,
-                dereference: true
-            });
+            yield core.group(`Copying ${path.join(currentdir, buildDir)} to ${tmpdir}`, () => __awaiter(this, void 0, void 0, function* () {
+                yield fs_extra_1.copy(path.join(currentdir, buildDir), tmpdir, {
+                    filter: (src, dest) => {
+                        core.info(`${src} => ${dest}`);
+                        return true;
+                    }
+                }).catch(error => {
+                    core.error(error);
+                });
+            }));
             if (fqdn) {
-                core.info(`✍️ Writing ${fqdn} domain name to ${path.join(tmpdir, 'CNAME')}`);
+                core.info(`Writing ${fqdn} domain name to ${path.join(tmpdir, 'CNAME')}`);
                 yield fs.writeFileSync(path.join(tmpdir, 'CNAME'), fqdn.trim());
             }
             if (nojekyll) {
-                core.info(`🚫 Disabling Jekyll support via ${path.join(tmpdir, '.nojekyll')}`);
+                core.info(`Disabling Jekyll support via ${path.join(tmpdir, '.nojekyll')}`);
                 yield fs.writeFileSync(path.join(tmpdir, '.nojekyll'), '');
             }
             const isDirty = yield git.isDirty();
             core.debug(`isDirty=${isDirty}`);
             if (keepHistory && remoteBranchExists && !isDirty) {
-                core.info('⚠️ No changes to commit');
+                core.info('No changes to commit');
                 return;
             }
             const committerPrs = addressparser_1.default(committer)[0];
-            core.info(`🔨 Configuring git committer as ${committerPrs.name} <${committerPrs.address}>`);
+            core.startGroup(`Configuring git committer`);
             yield git.setConfig('user.name', committerPrs.name);
             yield git.setConfig('user.email', committerPrs.address);
+            core.endGroup();
             if (!(yield git.hasChanges())) {
-                core.info('⚠️ Nothing to deploy');
+                core.info('Nothing to deploy');
                 return;
             }
-            core.info(`📐 Updating index of working tree`);
+            core.startGroup(`Updating index of working tree`);
             yield git.add('.');
-            if (allowEmptyCommit) {
-                core.debug(`Allow empty commit`);
-            }
+            core.endGroup();
             const authorPrs = addressparser_1.default(author)[0];
-            yield core.group(`📦 Committing changes as ${authorPrs.name} <${authorPrs.address}> author`, () => __awaiter(this, void 0, void 0, function* () {
+            yield core.group(`Committing changes`, () => __awaiter(this, void 0, void 0, function* () {
                 yield git.commit(allowEmptyCommit, `${authorPrs.name} <${authorPrs.address}>`, commitMessage);
                 yield git.showStat().then(output => {
                     core.info(output);
                 });
             }));
-            core.info(`🏃 Pushing ${buildDir} directory to ${targetBranch} branch on ${repo} repo`);
-            if (!keepHistory) {
-                core.debug(`Force push`);
+            if (!dryRun) {
+                core.startGroup(`Pushing ${buildDir} directory to ${targetBranch} branch on ${repo} repo`);
+                if (!keepHistory) {
+                    core.debug(`Force push`);
+                }
+                yield git.push(remoteURL, targetBranch, !keepHistory);
+                core.endGroup();
+                core.info(`Content of ${buildDir} has been deployed to GitHub Pages!`);
             }
-            yield git.push(remoteURL, targetBranch, !keepHistory);
+            else {
+                core.warning(`Push disabled (dry run)`);
+            }
             process.chdir(currentdir);
-            core.info(`🎉 Content of ${buildDir} has been deployed to GitHub Pages`);
         }
         catch (error) {
             core.setFailed(error.message);
