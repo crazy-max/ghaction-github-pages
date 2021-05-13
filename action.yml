@@ -45,6 +45,10 @@ inputs:
     description: 'Allow Jekyll to build your site'
     default: 'true'
     required: false
+  dry-run:
+    description: 'If enabled, nothing will be pushed'
+    default: 'false'
+    required: false
 
 runs:
   using: 'node12'
