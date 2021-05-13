@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.4.0 (2021/03/16)
+
+* Add `dry-run` input (#144)
+* Refactor logging output
+* Bump fs-extra from 9.1.0 to 10.0.0 (#139)
+* Bump @actions/core from 1.2.6 to 1.2.7 (#137)
+* Enhance workflow (#136)
+
 ## 2.3.0 (2021/03/16)
 
 * Bring back copySync (#135)
