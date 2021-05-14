@@ -17,7 +17,20 @@ group "pre-checkin" {
 }
 
 group "validate" {
-  targets = ["format-validate", "build-validate", "vendor-validate"]
+  targets = ["vendor-validate", "format-validate", "build-validate"]
+}
+
+target "vendor-update" {
+  inherits = ["node-version"]
+  dockerfile = "./hack/build.Dockerfile"
+  target = "vendor-update"
+  output = ["."]
+}
+
+target "vendor-validate" {
+  inherits = ["node-version"]
+  dockerfile = "./hack/build.Dockerfile"
+  target = "vendor-validate"
 }
 
 target "build" {
@@ -44,17 +57,4 @@ target "format-validate" {
   inherits = ["node-version"]
   dockerfile = "./hack/build.Dockerfile"
   target = "format-validate"
-}
-
-target "vendor-update" {
-  inherits = ["node-version"]
-  dockerfile = "./hack/vendor.Dockerfile"
-  target = "update"
-  output = ["."]
-}
-
-target "vendor-validate" {
-  inherits = ["node-version"]
-  dockerfile = "./hack/vendor.Dockerfile"
-  target = "validate"
 }
