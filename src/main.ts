@@ -60,10 +60,11 @@ async function run() {
       core.endGroup();
     }
 
-    await core.group(`Copying ${path.join(currentdir, buildDir)} to ${tmpdir}`, async () => {
-      await copy(path.join(currentdir, buildDir), tmpdir, {
-        filter: (src, dest) => {
-          core.info(`${src} => ${dest}`);
+    const sourceDir = path.join(currentdir, buildDir)
+    await core.group(`Copying ${sourceDir} to ${tmpdir}`, async () => {
+      await copy(sourceDir, tmpdir, {
+        filter: (src, dest) => { 
+          core.info(`${src.substring(sourceDir.length+1)}`);
           return true;
         }
       }).catch(error => {
