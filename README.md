@@ -138,7 +138,8 @@ Following inputs can be used as `step.with` keys
 | `commit_message`     | String  | Commit message (default `Deploy to GitHub pages`)                              |
 | `fqdn`               | String  | Write the given domain name to the CNAME file                                  |
 | `jekyll`             | Bool    | Allow Jekyll to build your site (default `true`)                               |
-| `dry-run`            | Bool    | If enabled, nothing will be pushed (default `false`)                           |
+| `dry_run`            | Bool    | If enabled, nothing will be pushed (default `false`)                           |
+| `verbose`            | Bool    | Enable verbose output (default `false`)                                        |
 
 ### environment variables
 

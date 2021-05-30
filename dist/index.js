@@ -164,9 +164,14 @@ function setConfig(key, value) {
     });
 }
 exports.setConfig = setConfig;
-function add(pattern) {
+function add(pattern, verbose) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield exec.exec('git', ['add', '--verbose', '--all', pattern]);
+        let args = ['add'];
+        if (verbose) {
+            args.push('--verbose');
+        }
+        args.push('--all', pattern);
+        yield exec.exec('git', args);
     });
 }
 exports.add = add;
@@ -187,7 +192,7 @@ function commit(allowEmptyCommit, author, message) {
 exports.commit = commit;
 function showStat() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield mexec.exec('git', ['show', `--stat-count=2000`, 'HEAD'], true).then(res => {
+        return yield mexec.exec('git', ['show', `--stat-count=1000`, 'HEAD'], true).then(res => {
             if (res.stderr != '' && !res.success) {
                 throw new Error(res.stderr);
             }
@@ -270,7 +275,8 @@ function run() {
             const commitMessage = core.getInput('commit_message') || git.defaults.message;
             const fqdn = core.getInput('fqdn');
             const nojekyll = /false/i.test(core.getInput('jekyll'));
-            const dryRun = /true/i.test(core.getInput('dry-run'));
+            const dryRun = /true/i.test(core.getInput('dry_run'));
+            const verbose = /true/i.test(core.getInput('verbose'));
             if (!fs.existsSync(buildDir)) {
                 core.setFailed('Build dir does not exist');
                 return;
@@ -308,15 +314,26 @@ function run() {
                 yield git.checkout(targetBranch);
                 core.endGroup();
             }
+            let copyCount = 0;
             yield core.group(`Copying ${path.join(currentdir, buildDir)} to ${tmpdir}`, () => __awaiter(this, void 0, void 0, function* () {
                 yield fs_extra_1.copy(path.join(currentdir, buildDir), tmpdir, {
                     filter: (src, dest) => {
-                        core.info(`${src} => ${dest}`);
+                        if (verbose) {
+                            core.info(`${src} => ${dest}`);
+                        }
+                        else {
+                            if (copyCount > 1 && copyCount % 80 === 0) {
+                                process.stdout.write('\n');
+                            }
+                            process.stdout.write('.');
+                            copyCount++;
+                        }
                         return true;
                     }
                 }).catch(error => {
                     core.error(error);
                 });
+                core.info(`${copyCount} file(s) copied.`);
             }));
             if (fqdn) {
                 core.info(`Writing ${fqdn} domain name to ${path.join(tmpdir, 'CNAME')}`);
@@ -342,7 +359,7 @@ function run() {
                 return;
             }
             core.startGroup(`Updating index of working tree`);
-            yield git.add('.');
+            yield git.add('.', verbose);
             core.endGroup();
             const authorPrs = addressparser_1.default(author)[0];
             yield core.group(`Committing changes`, () => __awaiter(this, void 0, void 0, function* () {

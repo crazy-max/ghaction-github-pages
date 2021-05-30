@@ -45,8 +45,12 @@ inputs:
     description: 'Allow Jekyll to build your site'
     default: 'true'
     required: false
-  dry-run:
+  dry_run:
     description: 'If enabled, nothing will be pushed'
+    default: 'false'
+    required: false
+  verbose:
+    description: 'Enable verbose output'
     default: 'false'
     required: false
 

@@ -6,7 +6,7 @@
 
 ## 2.4.0 (2021/05/13)
 
-* Add `dry-run` input (#144)
+* Add `dry_run` input (#144)
 * Refactor logging output
 * Bump fs-extra from 9.1.0 to 10.0.0 (#139)
 * Bump @actions/core from 1.2.6 to 1.2.7 (#137)
