@@ -51,8 +51,13 @@ export async function setConfig(key: string, value: string): Promise<void> {
   await exec.exec('git', ['config', key, value]);
 }
 
-export async function add(pattern: string): Promise<void> {
-  await exec.exec('git', ['add', '--verbose', '--all', pattern]);
+export async function add(pattern: string, verbose: boolean): Promise<void> {
+  let args: Array<string> = ['add'];
+  if (verbose) {
+    args.push('--verbose');
+  }
+  args.push('--all', pattern);
+  await exec.exec('git', args);
 }
 
 export async function commit(allowEmptyCommit: boolean, author: string, message: string): Promise<void> {
@@ -69,7 +74,7 @@ export async function commit(allowEmptyCommit: boolean, author: string, message:
 }
 
 export async function showStat(): Promise<string> {
-  return await mexec.exec('git', ['show', `--stat-count=2000`, 'HEAD'], true).then(res => {
+  return await mexec.exec('git', ['show', `--stat-count=1000`, 'HEAD'], true).then(res => {
     if (res.stderr != '' && !res.success) {
       throw new Error(res.stderr);
     }

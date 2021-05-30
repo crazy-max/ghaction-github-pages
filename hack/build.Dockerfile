@@ -56,4 +56,4 @@ FROM deps AS format-validate
 RUN --mount=type=bind,target=.,rw \
   --mount=type=cache,target=/src/.yarn/cache \
   --mount=type=cache,target=/src/node_modules \
-  yarn run format-check \
+  yarn run format-check

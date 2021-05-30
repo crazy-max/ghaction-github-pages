@@ -21,8 +21,10 @@ jobs:
         include:
           - target_branch: 'gh-pages'
             keep_history: 'false'
+            verbose: 'true'
           - target_branch: 'gh-pages-keep'
             keep_history: 'true'
+            verbose: 'false'
     steps:
       -
         name: Checkout
@@ -37,8 +39,8 @@ jobs:
         run: |
           MAXDIRS=5
           MAXDEPTH=5
-          MAXFILES=10
-          MAXSIZE=1000
+          MAXFILES=30
+          MAXSIZE=3000
           TOP=$(pwd|tr -cd '/'|wc -c)
 
           populate() {
@@ -96,6 +98,7 @@ jobs:
           target_branch: ${{ matrix.target_branch }}
           keep_history: ${{ matrix.keep_history }}
           build_dir: public
-          dry-run: ${{ github.event_name == 'pull_request' }}
+          dry_run: ${{ github.event_name == 'pull_request' }}
+          verbose: ${{ matrix.verbose }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

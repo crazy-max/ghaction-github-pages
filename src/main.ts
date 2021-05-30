@@ -19,7 +19,8 @@ async function run() {
     const commitMessage: string = core.getInput('commit_message') || git.defaults.message;
     const fqdn: string = core.getInput('fqdn');
     const nojekyll: boolean = /false/i.test(core.getInput('jekyll'));
-    const dryRun: boolean = /true/i.test(core.getInput('dry-run'));
+    const dryRun: boolean = /true/i.test(core.getInput('dry_run'));
+    const verbose: boolean = /true/i.test(core.getInput('verbose'));
 
     if (!fs.existsSync(buildDir)) {
       core.setFailed('Build dir does not exist');
@@ -60,15 +61,25 @@ async function run() {
       core.endGroup();
     }
 
+    let copyCount = 0;
     await core.group(`Copying ${path.join(currentdir, buildDir)} to ${tmpdir}`, async () => {
       await copy(path.join(currentdir, buildDir), tmpdir, {
         filter: (src, dest) => {
-          core.info(`${src} => ${dest}`);
+          if (verbose) {
+            core.info(`${src} => ${dest}`);
+          } else {
+            if (copyCount > 1 && copyCount % 80 === 0) {
+              process.stdout.write('\n');
+            }
+            process.stdout.write('.');
+            copyCount++;
+          }
           return true;
         }
       }).catch(error => {
         core.error(error);
       });
+      core.info(`${copyCount} file(s) copied.`);
     });
 
     if (fqdn) {
@@ -100,7 +111,7 @@ async function run() {
     }
 
     core.startGroup(`Updating index of working tree`);
-    await git.add('.');
+    await git.add('.', verbose);
     core.endGroup();
 
     const authorPrs: addressparser.Address = addressparser(author)[0];
