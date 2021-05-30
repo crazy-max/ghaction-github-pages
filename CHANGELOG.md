@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.5.0 (2021/05/30)
+
+* Add `verbose` input (#150)
+* Bump @actions/core from 1.2.7 to 1.3.0 (#148)
+* Yarn v2 (#146)
+
 ## 2.4.1 (2021/05/13)
 
 * Verbose output
