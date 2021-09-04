@@ -12,12 +12,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@actions/exec@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "@actions/exec@npm:1.0.4"
+"@actions/exec@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@actions/exec@npm:1.1.0"
   dependencies:
     "@actions/io": ^1.0.1
-  checksum: 909d0b4b342ced9d9e754fee47f82eeb4fe52779baedf9651a392d684c9f141abe864b46a8f290e8a2bf52ca545d99d1300df93b6597d3fd788c7ea6a002a67d
+  checksum: 1fad630ec2ca02438e0c05a9596f375edb3b04de50bf8cd712d6b79aec9f3cc3a175836d3ea610667e32431e7749cb93d8f4dec4947a48e29a720cfc3220216c
   languageName: node
   linkType: hard
 
@@ -356,7 +356,7 @@ __metadata:
   resolution: "github-pages@workspace:."
   dependencies:
     "@actions/core": ^1.5.0
-    "@actions/exec": ^1.0.4
+    "@actions/exec": ^1.1.0
     "@actions/io": ^1.1.0
     "@types/fs-extra": ^9.0.11
     "@types/node": ^15.3.0
