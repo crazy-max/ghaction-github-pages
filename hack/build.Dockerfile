@@ -17,7 +17,7 @@ COPY --from=deps /vendor /
 
 FROM deps AS vendor-validate
 RUN --mount=type=bind,target=.,rw \
-  git add -A && cp -rf /out/* .; \
+  git add -A && cp -rf /vendor/* .; \
   if [ -n "$(git status --porcelain -- yarn.lock)" ]; then \
     echo >&2 'ERROR: Vendor result differs. Please vendor your package with "docker buildx bake vendor-update"'; \
     git status --porcelain -- yarn.lock; \
