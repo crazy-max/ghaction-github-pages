@@ -100,5 +100,6 @@ jobs:
           build_dir: public
           dry_run: ${{ github.event_name == 'pull_request' }}
           verbose: ${{ matrix.verbose }}
+          jekyll: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
