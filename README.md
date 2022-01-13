@@ -132,6 +132,7 @@ Following inputs can be used as `step.with` keys
 | `keep_history`       | Bool    | Create incremental commit instead of doing push force (default `false`)        |
 | `allow_empty_commit` | Bool    | Allow an empty commit to be created (default `true`)                           |
 | `build_dir`          | String  | Build directory to deploy (**required**)                                       |
+| `absolute_build_dir` | Bool    | Whether to treat `build_dir` as an absolute path (defaults to `false`, making it relative to the working directory) |
 | `committer`          | String  | Committer name and email address as `Display Name <joe@foo.bar>` (defaults to the GitHub Actions bot user) |
 | `author`             | String  | Author name and email address as `Display Name <joe@foo.bar>` (defaults to the GitHub Actions bot user) |
 | `commit_message`     | String  | Commit message (default `Deploy to GitHub pages`)                              |
