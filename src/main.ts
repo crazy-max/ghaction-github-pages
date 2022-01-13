@@ -14,6 +14,8 @@ async function run() {
     const keepHistory: boolean = /true/i.test(core.getInput('keep_history'));
     const allowEmptyCommit: boolean = /true/i.test(core.getInput('allow_empty_commit'));
     const buildDir: string = core.getInput('build_dir', {required: true});
+    const absoluteBuildDir: boolean = /true/i.test(core.getInput('absolute_build_dir'));
+    const followSymlinks: boolean = /true/i.test(core.getInput('follow_symlinks'));
     const committer: string = core.getInput('committer') || git.defaults.committer;
     const author: string = core.getInput('author') || git.defaults.author;
     const commitMessage: string = core.getInput('commit_message') || git.defaults.message;
@@ -63,7 +65,8 @@ async function run() {
 
     let copyCount = 0;
     await core.group(`Copying ${path.join(currentdir, buildDir)} to ${tmpdir}`, async () => {
-      await copy(path.join(currentdir, buildDir), tmpdir, {
+      const sourcePath = absoluteBuildDir ? buildDir : path.join(currentdir, buildDir);
+      await copy(sourcePath, tmpdir, {
         filter: (src, dest) => {
           if (verbose) {
             core.info(`${src} => ${dest}`);
@@ -75,7 +78,8 @@ async function run() {
             copyCount++;
           }
           return true;
-        }
+        },
+        dereference: followSymlinks
       }).catch(error => {
         core.error(error);
       });

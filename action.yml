@@ -29,6 +29,14 @@ inputs:
   build_dir:
     description: 'Build directory to deploy'
     required: true
+  absolute_build_dir:
+    description: 'Whether to treat build_dir as an absolute path'
+    default: 'false'
+    required: false
+  follow_symlinks:
+    description: 'If enabled, the content of symbolic links will be copied'
+    default: 'false'
+    required: false
   committer:
     description: 'The committer name and email address'
     required: false
