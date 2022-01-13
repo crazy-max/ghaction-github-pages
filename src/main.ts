@@ -15,6 +15,7 @@ async function run() {
     const allowEmptyCommit: boolean = /true/i.test(core.getInput('allow_empty_commit'));
     const buildDir: string = core.getInput('build_dir', {required: true});
     const absoluteBuildDir: boolean = /true/i.test(core.getInput('absolute_build_dir'));
+    const followSymlinks: boolean = /true/i.test(core.getInput('follow_symlinks'));
     const committer: string = core.getInput('committer') || git.defaults.committer;
     const author: string = core.getInput('author') || git.defaults.author;
     const commitMessage: string = core.getInput('commit_message') || git.defaults.message;
@@ -77,7 +78,8 @@ async function run() {
             copyCount++;
           }
           return true;
-        }
+        },
+        dereference: followSymlinks
       }).catch(error => {
         core.error(error);
       });
