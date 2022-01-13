@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.6.0 (2022/01/13)
+
+* Add `absolute_build_dir` and `follow_symlinks` inputs (#161)
+* Bump @actions/exec from 1.0.4 to 1.1.0 (#152)
+* Bump @actions/core from 1.3.0 to 1.6.0 (#154 #156)
+
 ## 2.5.0 (2021/05/30)
 
 * Add `verbose` input (#150)
