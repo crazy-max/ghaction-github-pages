@@ -24,7 +24,7 @@
     "@actions/core": "^1.6.0",
     "@actions/exec": "^1.1.0",
     "addressparser": "^1.0.1",
-    "fs-extra": "^10.0.0"
+    "fs-extra": "^10.1.0"
   },
   "devDependencies": {
     "@actions/io": "^1.1.0",
