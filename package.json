@@ -3,10 +3,10 @@
   "description": "GitHub Action to deploy to GitHub Pages",
   "main": "lib/main.js",
   "scripts": {
-    "build": "tsc",
-    "format": "prettier --write **/*.ts",
-    "format-check": "prettier --check **/*.ts",
-    "package": "ncc build --source-map --license licenses.txt"
+    "build": "ncc build src/main.ts --source-map --minify --license licenses.txt",
+    "lint": "eslint src/**/*.ts",
+    "format": "eslint --fix src/**/*.ts",
+    "all": "yarn run build && yarn run format"
   },
   "repository": {
     "type": "git",
@@ -27,12 +27,16 @@
     "fs-extra": "^10.0.0"
   },
   "devDependencies": {
-    "@actions/io": "^1.1.0",
     "@types/fs-extra": "^9.0.11",
-    "@types/node": "^15.3.0",
-    "@vercel/ncc": "^0.28.5",
-    "prettier": "^2.3.0",
-    "typescript": "^4.2.4",
-    "typescript-formatter": "^7.2.2"
+    "@types/node": "^16.11.26",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
+    "@vercel/ncc": "^0.33.3",
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.3.1",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.4.4"
   }
 }
