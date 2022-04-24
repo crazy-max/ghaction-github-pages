@@ -52,7 +52,7 @@ export async function setConfig(key: string, value: string): Promise<void> {
 }
 
 export async function add(pattern: string, verbose: boolean): Promise<void> {
-  let args: Array<string> = ['add'];
+  const args: Array<string> = ['add'];
   if (verbose) {
     args.push('--verbose');
   }
@@ -61,7 +61,7 @@ export async function add(pattern: string, verbose: boolean): Promise<void> {
 }
 
 export async function commit(allowEmptyCommit: boolean, author: string, message: string): Promise<void> {
-  let args: Array<string> = [];
+  const args: Array<string> = [];
   args.push('commit');
   if (allowEmptyCommit) {
     args.push('--allow-empty');
@@ -83,7 +83,7 @@ export async function showStat(): Promise<string> {
 }
 
 export async function push(remoteURL: string, branch: string, force: boolean): Promise<void> {
-  let args: Array<string> = [];
+  const args: Array<string> = [];
   args.push('push');
   if (force) {
     args.push('--force');
