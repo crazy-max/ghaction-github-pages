@@ -8,7 +8,7 @@
 
 A GitHub Action to deploy to GitHub Pages
 
-If you are interested, [check out](https://git.io/Je09Y) my other :octocat: GitHub Actions!
+If you are interested, [check out](https://github.com/crazy-max?tab=repositories&q=ghaction&type=source&language=&sort=) my other :octocat: GitHub Actions!
 
 ![GitHub Pages](.github/ghaction-github-pages.png)
 
