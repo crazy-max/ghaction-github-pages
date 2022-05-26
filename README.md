@@ -63,7 +63,7 @@ jobs:
       -
         name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: crazy-max/ghaction-github-pages@v3
         with:
           target_branch: gh-pages
           build_dir: public
@@ -79,16 +79,16 @@ sign commits:
 ```yaml
       -
         name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v3
+        uses: crazy-max/ghaction-import-gpg@v5
         with:
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
-          git-user-signingkey: true
-          git-commit-gpgsign: true
+          git_user_signingkey: true
+          git_commit_gpgsign: true
       -
         name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: crazy-max/ghaction-github-pages@v3
         with:
           target_branch: gh-pages
           build_dir: public
@@ -104,13 +104,13 @@ check availability of GitHub Pages before deploying:
 ```yaml
       -
         name: Check GitHub Pages status
-        uses: crazy-max/ghaction-github-status@v2
+        uses: crazy-max/ghaction-github-status@v3
         with:
           pages_threshold: major_outage
       -
         name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: crazy-max/ghaction-github-pages@v3
         with:
           target_branch: gh-pages
           build_dir: public
