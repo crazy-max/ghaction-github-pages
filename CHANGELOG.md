@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.7.0 (2022/05/26)
+
+* Update dev dependencies and workflow (#166)
+
 ## 2.6.0 (2022/01/13)
 
 * Add `absolute_build_dir` and `follow_symlinks` inputs (#161)
