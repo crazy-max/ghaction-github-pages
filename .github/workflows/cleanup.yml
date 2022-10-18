@@ -1,0 +1,26 @@
+name: cleanup
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 1 * *'
+
+jobs:
+  branches:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        branch:
+          - gh-pages
+          - gh-pages-keep
+    steps:
+      -
+        name: Delete branch
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.git.deleteRef({
+              ...context.repo,
+              ref: "heads/${{ matrix.branch }}"
+            });
