@@ -1,14 +1,12 @@
 [![GitHub release](https://img.shields.io/github/release/crazy-max/ghaction-github-pages.svg?style=flat-square)](https://github.com/crazy-max/ghaction-github-pages/releases/latest)
 [![GitHub marketplace](https://img.shields.io/badge/marketplace-github--pages-blue?logo=github&style=flat-square)](https://github.com/marketplace/actions/github-pages)
-[![CI workflow](https://img.shields.io/github/workflow/status/crazy-max/ghaction-github-pages/ci?label=ci&logo=github&style=flat-square)](https://github.com/crazy-max/ghaction-github-pages/actions?workflow=ci)
+[![CI workflow](https://img.shields.io/github/actions/workflow/status/crazy-max/ghaction-github-pages/ci.yml?branch=dev&label=ci&logo=github&style=flat-square)](https://github.com/crazy-max/ghaction-github-pages/actions?workflow=ci)
 [![Become a sponsor](https://img.shields.io/badge/sponsor-crazy--max-181717.svg?logo=github&style=flat-square)](https://github.com/sponsors/crazy-max)
 [![Paypal Donate](https://img.shields.io/badge/donate-paypal-00457c.svg?logo=paypal&style=flat-square)](https://www.paypal.me/crazyws)
 
 ## About
 
 A GitHub Action to deploy to GitHub Pages
-
-If you are interested, [check out](https://github.com/crazy-max?tab=repositories&q=ghaction&type=source&language=&sort=) my other :octocat: GitHub Actions!
 
 ![GitHub Pages](.github/ghaction-github-pages.png)
 
