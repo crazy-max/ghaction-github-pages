@@ -1,12 +1,11 @@
 {
   "name": "github-pages",
   "description": "GitHub Action to deploy to GitHub Pages",
-  "main": "lib/main.js",
+  "main": "src/main.ts",
   "scripts": {
-    "build": "ncc build src/main.ts --source-map --minify --license licenses.txt",
+    "build": "ncc build --source-map --minify --license licenses.txt",
     "lint": "eslint src/**/*.ts",
-    "format": "eslint --fix src/**/*.ts",
-    "all": "yarn run build && yarn run format"
+    "format": "eslint --fix src/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -20,6 +19,7 @@
   ],
   "author": "CrazyMax",
   "license": "MIT",
+  "packageManager": "yarn@3.5.1",
   "dependencies": {
     "@actions/core": "^1.10.0",
     "@actions/exec": "^1.1.0",
