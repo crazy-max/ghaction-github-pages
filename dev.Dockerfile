@@ -22,7 +22,7 @@ RUN --mount=type=bind,target=.,rw <<EOT
   git add -A
   cp -rf /vendor/* .
   if [ -n "$(git status --porcelain -- yarn.lock)" ]; then
-    echo >&2 'ERROR: Vendor result differs. Please vendor your package with "docker buildx bake vendor-update"'
+    echo >&2 'ERROR: Vendor result differs. Please vendor your package with "docker buildx bake vendor"'
     git status --porcelain -- yarn.lock
     exit 1
   fi
