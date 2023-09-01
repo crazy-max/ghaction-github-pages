@@ -36,6 +36,9 @@ name: website
 
 on: push
 
+permissions: 
+  contents: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -122,31 +125,31 @@ check availability of GitHub Pages before deploying:
 
 Following inputs can be used as `step.with` keys
 
-| Name                 | Type    | Description                                                                    |
-|----------------------|---------|--------------------------------------------------------------------------------|
-| `domain`             | String  | Git domain (default `github.com`)                                              |
-| `repo`               | String  | GitHub repository where assets will be deployed (default `$GITHUB_REPOSITORY`) |
-| `target_branch`      | String  | Git branch where assets will be deployed (default `gh-pages`)                  |
-| `keep_history`       | Bool    | Create incremental commit instead of doing push force (default `false`)        |
-| `allow_empty_commit` | Bool    | Allow an empty commit to be created (default `true`)                           |
-| `build_dir`          | String  | Build directory to deploy (**required**)                                       |
-| `absolute_build_dir` | Bool    | Whether to treat `build_dir` as an absolute path (defaults to `false`, making it relative to the working directory) |
-| `follow_symlinks`    | Bool    | If enabled, the content of symbolic links will be copied (default `false`)     |
-| `committer`          | String  | Committer name and email address as `Display Name <joe@foo.bar>` (defaults to the GitHub Actions bot user) |
-| `author`             | String  | Author name and email address as `Display Name <joe@foo.bar>` (defaults to the GitHub Actions bot user) |
-| `commit_message`     | String  | Commit message (default `Deploy to GitHub pages`)                              |
-| `fqdn`               | String  | Write the given domain name to the CNAME file                                  |
-| `jekyll`             | Bool    | Allow Jekyll to build your site (default `true`)                               |
-| `dry_run`            | Bool    | If enabled, nothing will be pushed (default `false`)                           |
-| `verbose`            | Bool    | Enable verbose output (default `false`)                                        |
+| Name                 | Type   | Description                                                                                                         |
+|----------------------|--------|---------------------------------------------------------------------------------------------------------------------|
+| `domain`             | String | Git domain (default `github.com`)                                                                                   |
+| `repo`               | String | GitHub repository where assets will be deployed (default `$GITHUB_REPOSITORY`)                                      |
+| `target_branch`      | String | Git branch where assets will be deployed (default `gh-pages`)                                                       |
+| `keep_history`       | Bool   | Create incremental commit instead of doing push force (default `false`)                                             |
+| `allow_empty_commit` | Bool   | Allow an empty commit to be created (default `true`)                                                                |
+| `build_dir`          | String | Build directory to deploy (**required**)                                                                            |
+| `absolute_build_dir` | Bool   | Whether to treat `build_dir` as an absolute path (defaults to `false`, making it relative to the working directory) |
+| `follow_symlinks`    | Bool   | If enabled, the content of symbolic links will be copied (default `false`)                                          |
+| `committer`          | String | Committer name and email address as `Display Name <joe@foo.bar>` (defaults to the GitHub Actions bot user)          |
+| `author`             | String | Author name and email address as `Display Name <joe@foo.bar>` (defaults to the GitHub Actions bot user)             |
+| `commit_message`     | String | Commit message (default `Deploy to GitHub pages`)                                                                   |
+| `fqdn`               | String | Write the given domain name to the CNAME file                                                                       |
+| `jekyll`             | Bool   | Allow Jekyll to build your site (default `true`)                                                                    |
+| `dry_run`            | Bool   | If enabled, nothing will be pushed (default `false`)                                                                |
+| `verbose`            | Bool   | Enable verbose output (default `false`)                                                                             |
 
 ### environment variables
 
 Following environment variables can be used as `step.env` keys
 
-| Name           | Description                           |
-|----------------|---------------------------------------|
-| `GITHUB_TOKEN` | [GITHUB_TOKEN](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token) as provided by `secrets` |
+| Name           | Description                                                                                                                                                  |
+|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `GITHUB_TOKEN` | [GITHUB_TOKEN](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token) as provided by `secrets`          |
 | `GH_PAT`       | Use a [Personal Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) if you want to deploy to another repo |
 
 ## Contributing
