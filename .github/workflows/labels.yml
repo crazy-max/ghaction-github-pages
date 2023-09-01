@@ -7,7 +7,7 @@ concurrency:
 on:
   push:
     branches:
-      - 'master'
+      - 'dev'
     paths:
       - '.github/labels.yml'
       - '.github/workflows/labels.yml'
