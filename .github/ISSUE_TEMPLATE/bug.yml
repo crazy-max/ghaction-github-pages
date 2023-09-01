@@ -1,0 +1,101 @@
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema
+name: Bug Report
+description: Report a bug
+labels:
+  - kind/bug
+  - status/triage
+
+body:
+  - type: checkboxes
+    attributes:
+      label: Support guidelines
+      description: Please read the support guidelines before proceeding.
+      options:
+        - label: I've read the [support guidelines](https://github.com/crazy-max/ghaction-github-pages/blob/master/.github/SUPPORT.md)
+          required: true
+
+  - type: checkboxes
+    attributes:
+      label: I've found a bug and checked that ...
+      description: |
+        Make sure that your request fulfills all of the following requirements. If one requirement cannot be satisfied, explain in detail why.
+      options:
+        - label: ... the documentation does not mention anything about my problem
+        - label: ... there are no open or closed issues that are related to my problem
+
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        Please provide a brief description of the bug in 1-2 sentences.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Expected behaviour
+      description: |
+        Please describe precisely what you'd expect to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Actual behaviour
+      description: |
+        Please describe precisely what is actually happening.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: |
+        Please describe the steps to reproduce the bug.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Repository URL
+      description: >
+        Enter the URL of the repository where you are experiencing the
+        issue. If your repository is private, provide a link to a minimal
+        repository that reproduces the issue.
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Workflow run URL
+      description: >
+        Enter the URL of the GitHub Action workflow run that fails (e.g.
+        `https://github.com/<user>/<repo>/actions/runs/<id>`)
+
+  - type: textarea
+    attributes:
+      label: YAML workflow
+      description: |
+        Provide the YAML of the workflow that's causing the issue.
+        Make sure to remove any sensitive information.
+      render: yaml
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Workflow logs
+      description: >
+        [Attach](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/attaching-files)
+        the [log file of your workflow run](https://docs.github.com/en/actions/managing-workflow-runs/using-workflow-run-logs#downloading-logs)
+        and make sure to remove any sensitive information.
+
+  - type: textarea
+    attributes:
+      label: Additional info
+      description: |
+        Please provide any additional information that seem useful.
