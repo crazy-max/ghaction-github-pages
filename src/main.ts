@@ -68,8 +68,9 @@ async function run() {
       if (verbose) {
         core.info(`Checking if directories need to be emptied`);
       }
+      const sourcePath = absoluteBuildDir ? buildDir : path.join(currentdir, buildDir);
       // Empty the subdirectories that are part of the build in order to keep the others
-      const files = fs.readdirSync(buildDir);
+      const files = fs.readdirSync(sourcePath);
       for (const file of files) {
         if (verbose) {
           core.info(`Checking if directories need to be emptied`);
