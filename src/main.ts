@@ -72,10 +72,10 @@ async function run() {
       // Empty the subdirectories that are part of the build in order to keep the others
       const files = fs.readdirSync(sourcePath);
       for (const file of files) {
-        if (verbose) {
-          core.info(`Checking if directories need to be emptied`);
-        }
         const sourceSubDir=path.resolve(buildDir, file);
+        if (verbose) {
+          core.info(`Checking if directory ${sourceSubDir} need to be emptied`);
+        }
 
         if (fs.existsSync(sourceSubDir) && (fs.lstatSync(sourceSubDir).isDirectory())) {
           if (verbose) {
