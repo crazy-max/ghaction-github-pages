@@ -1,5 +1,5 @@
 import addressparser from 'addressparser';
-import {copy, emptydir, emptydirSync} from 'fs-extra';
+import {copy, emptydirSync} from 'fs-extra';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -53,7 +53,7 @@ async function run() {
 
     process.chdir(tmpdir);
 
-    if ( (keepHistory || multipleSites) && remoteBranchExists) {
+    if ((keepHistory || multipleSites) && remoteBranchExists) {
       core.startGroup(`Cloning ${repo}`);
       await git.clone(remoteURL, targetBranch, '.');
       core.endGroup();
@@ -64,26 +64,25 @@ async function run() {
       core.endGroup();
     }
 
-    if ( multipleSites && (!keepHistory)) {
+    if (multipleSites && !keepHistory) {
       if (verbose) {
         core.info(`Checking if directories need to be emptied`);
       }
       // Empty the subdirectories that are part of the build in order to keep the others
-      fs.readdir(buildDir, (err, files) => {
-        for (const file of files) {
-          if (verbose) {
-            core.info(`Checking if directories need to be emptied`);
-          }
-          if (fs.lstatSync(path.resolve(buildDir, file)).isDirectory()) {
-            if (verbose) {
-              core.info(`Subdirectory ${file} must be emptied`);
-            }
-            // This directory is part of the build, so empty it to simulate keepHistory
-              emptydirSync(path.resolve('.', file));
-              core.debug('Emptying subdirectory '+file);
-          }
+      const files = fs.readdirSync(buildDir);
+      for (const file of files) {
+        if (verbose) {
+          core.info(`Checking if directories need to be emptied`);
         }
-      });
+        if (fs.lstatSync(path.resolve(buildDir, file)).isDirectory()) {
+          if (verbose) {
+            core.info(`Subdirectory ${file} must be emptied`);
+          }
+          // This directory is part of the build, so empty it to simulate keepHistory
+          emptydirSync(path.resolve('.', file));
+          core.debug('Emptying subdirectory ' + file);
+        }
+      }
     }
 
     let copyCount = 0;
@@ -121,7 +120,7 @@ async function run() {
 
     const isDirty: boolean = await git.isDirty();
     core.debug(`isDirty=${isDirty}`);
-    if ( (keepHistory || multipleSites) && remoteBranchExists && !isDirty) {
+    if ((keepHistory || multipleSites) && remoteBranchExists && !isDirty) {
       core.info('No changes to commit');
       return;
     }
