@@ -75,7 +75,9 @@ async function run() {
         if (verbose) {
           core.info(`Checking if directories need to be emptied`);
         }
-        if (fs.lstatSync(path.resolve(buildDir, file)).isDirectory()) {
+        const sourceSubDir=path.resolve(buildDir, file);
+
+        if (fs.existsSync(sourceSubDir) && (fs.lstatSync(sourceSubDir).isDirectory())) {
           if (verbose) {
             core.info(`Subdirectory ${file} must be emptied`);
           }
