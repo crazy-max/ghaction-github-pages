@@ -1,5 +1,5 @@
 import addressparser from 'addressparser';
-import {copy} from 'fs-extra';
+import {copy, emptydirSync} from 'fs-extra';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -12,6 +12,7 @@ async function run() {
     const repo: string = core.getInput('repo') || process.env['GITHUB_REPOSITORY'] || '';
     const targetBranch: string = core.getInput('target_branch') || git.defaults.targetBranch;
     const keepHistory: boolean = /true/i.test(core.getInput('keep_history'));
+    const multipleSites: boolean = /true/i.test(core.getInput('multiple_sites'));
     const allowEmptyCommit: boolean = /true/i.test(core.getInput('allow_empty_commit'));
     const buildDir: string = core.getInput('build_dir', {required: true});
     const absoluteBuildDir: boolean = /true/i.test(core.getInput('absolute_build_dir'));
@@ -52,7 +53,7 @@ async function run() {
 
     process.chdir(tmpdir);
 
-    if (keepHistory && remoteBranchExists) {
+    if ((keepHistory || multipleSites) && remoteBranchExists) {
       core.startGroup(`Cloning ${repo}`);
       await git.clone(remoteURL, targetBranch, '.');
       core.endGroup();
@@ -63,10 +64,40 @@ async function run() {
       core.endGroup();
     }
 
+    const buildPath = absoluteBuildDir ? buildDir : path.join(currentdir, buildDir);
+    if (multipleSites && !keepHistory) {
+      if (verbose) {
+        core.info(`Checking if directories need to be emptied`);
+      }
+      // Empty the subdirectories that are part of the build in order to keep the others
+      const files = fs.readdirSync(buildPath);
+      for (const file of files) {
+        const sourceSubDir=path.resolve(tmpdir, file);
+        if (verbose) {
+          core.info(`Checking if directory ${sourceSubDir} need to be emptied`);
+        }
+
+        if (fs.existsSync(sourceSubDir)) {
+           if (fs.lstatSync(sourceSubDir).isDirectory()) {
+            if (verbose) {
+              core.info(`Subdirectory ${file} must be emptied`);
+            }
+            // This directory is part of the build, so empty it to simulate keepHistory
+            emptydirSync(sourceSubDir);
+            core.debug(`Emptied subdirectory ${sourceSubDir}`);
+          } else if (verbose) {
+             core.info(`${sourceSubDir} is not a directory`);
+          }
+        } else if (verbose) {
+          core.info(`No previous history for ${file}`);
+
+        }
+      }
+    }
+
     let copyCount = 0;
-    await core.group(`Copying ${path.join(currentdir, buildDir)} to ${tmpdir}`, async () => {
-      const sourcePath = absoluteBuildDir ? buildDir : path.join(currentdir, buildDir);
-      await copy(sourcePath, tmpdir, {
+    await core.group(`Copying ${buildPath} to ${tmpdir}`, async () => {
+      await copy(buildPath, tmpdir, {
         filter: (src, dest) => {
           if (verbose) {
             core.info(`${src} => ${dest}`);
@@ -98,7 +129,7 @@ async function run() {
 
     const isDirty: boolean = await git.isDirty();
     core.debug(`isDirty=${isDirty}`);
-    if (keepHistory && remoteBranchExists && !isDirty) {
+    if ((keepHistory || multipleSites) && remoteBranchExists && !isDirty) {
       core.info('No changes to commit');
       return;
     }

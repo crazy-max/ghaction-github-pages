@@ -6,7 +6,7 @@
 
 ## About
 
-A GitHub Action to deploy to GitHub Pages
+A fork of [Crazy-max's GitHub Action](https://github.com/crazy-max/ghaction-github-pages) to deploy to GitHub Pages
 
 ![GitHub Pages](.github/ghaction-github-pages.png)
 

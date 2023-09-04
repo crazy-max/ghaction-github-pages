@@ -1,6 +1,6 @@
 # https://help.github.com/en/articles/metadata-syntax-for-github-actions
 name: 'GitHub Pages'
-description: 'GitHub Action to deploy to GitHub Pages'
+description: 'GitHub Action to deploy mulitple sites to GitHub Pages'
 author: 'crazy-max'
 branding:
   color: 'green'
@@ -20,6 +20,10 @@ inputs:
     required: false
   keep_history:
     description: 'Create incremental commit instead of doing push force'
+    default: 'false'
+    required: false
+  multiple_sites:
+    description: 'Supports for deployment of multiple sites (one per subdir)'
     default: 'false'
     required: false
   allow_empty_commit:
