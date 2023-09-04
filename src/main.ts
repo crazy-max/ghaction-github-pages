@@ -64,15 +64,15 @@ async function run() {
       core.endGroup();
     }
 
+    const buildPath = absoluteBuildDir ? buildDir : path.join(currentdir, buildDir);
     if (multipleSites && !keepHistory) {
       if (verbose) {
         core.info(`Checking if directories need to be emptied`);
       }
-      const sourcePath = absoluteBuildDir ? buildDir : path.join(currentdir, buildDir);
       // Empty the subdirectories that are part of the build in order to keep the others
-      const files = fs.readdirSync(sourcePath);
+      const files = fs.readdirSync(buildPath);
       for (const file of files) {
-        const sourceSubDir=path.resolve(buildDir, file);
+        const sourceSubDir=path.resolve(tmpdir, file);
         if (verbose) {
           core.info(`Checking if directory ${sourceSubDir} need to be emptied`);
         }
@@ -84,9 +84,9 @@ async function run() {
             }
             // This directory is part of the build, so empty it to simulate keepHistory
             emptydirSync(sourceSubDir);
-            core.debug('Emptied subdirectory ' + sourceSubDir);
+            core.debug(`Emptied subdirectory ${sourceSubDir}`);
           } else if (verbose) {
-             core.info(`${file} is not a directory`);
+             core.info(`${sourceSubDir} is not a directory`);
           }
         } else if (verbose) {
           core.info(`No previous history for ${file}`);
@@ -96,9 +96,8 @@ async function run() {
     }
 
     let copyCount = 0;
-    await core.group(`Copying ${path.join(currentdir, buildDir)} to ${tmpdir}`, async () => {
-      const sourcePath = absoluteBuildDir ? buildDir : path.join(currentdir, buildDir);
-      await copy(sourcePath, tmpdir, {
+    await core.group(`Copying ${buildPath} to ${tmpdir}`, async () => {
+      await copy(buildPath, tmpdir, {
         filter: (src, dest) => {
           if (verbose) {
             core.info(`${src} => ${dest}`);
