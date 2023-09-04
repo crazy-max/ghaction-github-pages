@@ -77,13 +77,20 @@ async function run() {
           core.info(`Checking if directory ${sourceSubDir} need to be emptied`);
         }
 
-        if (fs.existsSync(sourceSubDir) && (fs.lstatSync(sourceSubDir).isDirectory())) {
-          if (verbose) {
-            core.info(`Subdirectory ${file} must be emptied`);
+        if (fs.existsSync(sourceSubDir)) {
+           if (fs.lstatSync(sourceSubDir).isDirectory()) {
+            if (verbose) {
+              core.info(`Subdirectory ${file} must be emptied`);
+            }
+            // This directory is part of the build, so empty it to simulate keepHistory
+            emptydirSync(sourceSubDir);
+            core.debug('Emptied subdirectory ' + sourceSubDir);
+          } else if (verbose) {
+             core.info(`${file} is not a directory`);
           }
-          // This directory is part of the build, so empty it to simulate keepHistory
-          emptydirSync(path.resolve('.', file));
-          core.debug('Emptying subdirectory ' + file);
+        } else if (verbose) {
+          core.info(`No previous history for ${file}`);
+
         }
       }
     }
