@@ -1,15 +1,19 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
     "target": "es6",
     "module": "commonjs",
+    "strict": true,
+    "sourceMap": true,
     "newLine": "lf",
     "outDir": "./lib",
     "rootDir": "./src",
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
     "noImplicitAny": false,
+    "resolveJsonModule": true,
     "useUnknownInCatchVariables": false,
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
