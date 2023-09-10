@@ -28,8 +28,8 @@ ___
 
 Below is a simple snippet to deploy to GitHub Pages with a dummy HTML page.
 
-A [workflow](https://github.com/crazy-max/ghaction-github-pages/actions?query=workflow%3Aci) is also available for
-this repository and deploys [every day to GitHub Pages](https://crazy-max.github.io/ghaction-github-pages/).
+A [workflow](https://github.com/crazy-max/ghaction-github-pages/actions?query=workflow%3Aci)
+is also available for this repository and deploys [every day to GitHub Pages](https://crazy-max.github.io/ghaction-github-pages/).
 
 ```yaml
 name: website
@@ -63,7 +63,6 @@ jobs:
           EOL
       -
         name: Deploy to GitHub Pages
-        if: success()
         uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: gh-pages
@@ -74,8 +73,8 @@ jobs:
 
 ### Sign commits
 
-You can use the [Import GPG](https://github.com/crazy-max/ghaction-import-gpg) GitHub Action along with this one to
-sign commits:
+You can use the [Import GPG](https://github.com/crazy-max/ghaction-import-gpg)
+action along with this one to sign commits:
 
 ```yaml
       -
@@ -88,7 +87,6 @@ sign commits:
           git_commit_gpgsign: true
       -
         name: Deploy to GitHub Pages
-        if: success()
         uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: gh-pages
@@ -99,8 +97,9 @@ sign commits:
 
 ### Check availability of GitHub Pages
 
-You can use the [GitHub Status](https://github.com/crazy-max/ghaction-github-status) Action along with this one to
-check availability of GitHub Pages before deploying:
+You can use the [GitHub Status](https://github.com/crazy-max/ghaction-github-status)
+action along with this one to check the availability of GitHub Pages before
+deploying:
 
 ```yaml
       -
@@ -110,7 +109,6 @@ check availability of GitHub Pages before deploying:
           pages_threshold: major_outage
       -
         name: Deploy to GitHub Pages
-        if: success()
         uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: gh-pages
