@@ -29,7 +29,7 @@ ___
 Below is a simple snippet to deploy to GitHub Pages with a dummy HTML page.
 
 A [workflow](https://github.com/crazy-max/ghaction-github-pages/actions?query=workflow%3Aci) is also available for
-this repository and deploys [everyday to GitHub pages](https://crazy-max.github.io/ghaction-github-pages/).
+this repository and deploys [every day to GitHub Pages](https://crazy-max.github.io/ghaction-github-pages/).
 
 ```yaml
 name: website
@@ -64,7 +64,7 @@ jobs:
       -
         name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v3
+        uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: gh-pages
           build_dir: public
@@ -89,7 +89,7 @@ sign commits:
       -
         name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v3
+        uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: gh-pages
           build_dir: public
@@ -111,7 +111,7 @@ check availability of GitHub Pages before deploying:
       -
         name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v3
+        uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: gh-pages
           build_dir: public
@@ -154,11 +154,10 @@ Following environment variables can be used as `step.env` keys
 
 ## Contributing
 
-Want to contribute? Awesome! The most basic way to show your support is to star the project, or to raise issues. If
-you want to open a pull request, please read the [contributing guidelines](.github/CONTRIBUTING.md).
-
-You can also support this project by [**becoming a sponsor on GitHub**](https://github.com/sponsors/crazy-max) or by
-making a [Paypal donation](https://www.paypal.me/crazyws) to ensure this journey continues indefinitely!
+Want to contribute? Awesome! The most basic way to show your support is to star
+the project, or to raise issues. You can also support this project by [**becoming a sponsor on GitHub**](https://github.com/sponsors/crazy-max)
+or by making a [PayPal donation](https://www.paypal.me/crazyws) to ensure this
+journey continues indefinitely!
 
 Thanks again for your support, it is much appreciated! :pray:
 
