@@ -24,7 +24,7 @@
   ],
   "author": "CrazyMax",
   "license": "MIT",
-  "packageManager": "yarn@3.6.3",
+  "packageManager": "yarn@4.12.0",
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@actions/exec": "^1.1.1",
