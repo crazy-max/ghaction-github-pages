@@ -1,5 +1,6 @@
-import * as mexec from './exec';
 import * as exec from '@actions/exec';
+
+import * as mexec from './exec.js';
 
 export const defaults = {
   targetBranch: 'gh-pages',
