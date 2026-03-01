@@ -4,7 +4,8 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import * as core from '@actions/core';
-import * as git from './git';
+
+import * as git from './git.js';
 
 async function run() {
   try {
@@ -88,12 +89,12 @@ async function run() {
 
     if (fqdn) {
       core.info(`Writing ${fqdn} domain name to ${path.join(tmpdir, 'CNAME')}`);
-      await fs.writeFileSync(path.join(tmpdir, 'CNAME'), fqdn.trim());
+      await fs.promises.writeFile(path.join(tmpdir, 'CNAME'), fqdn.trim());
     }
 
     if (nojekyll) {
       core.info(`Disabling Jekyll support via ${path.join(tmpdir, '.nojekyll')}`);
-      await fs.writeFileSync(path.join(tmpdir, '.nojekyll'), '');
+      await fs.promises.writeFile(path.join(tmpdir, '.nojekyll'), '');
     }
 
     const isDirty: boolean = await git.isDirty();
@@ -103,7 +104,7 @@ async function run() {
       return;
     }
 
-    const committerPrs: addressparser.Address = addressparser(committer)[0];
+    const committerPrs = addressparser(committer)[0];
     core.startGroup(`Configuring git committer`);
     await git.setConfig('user.name', committerPrs.name);
     await git.setConfig('user.email', committerPrs.address);
@@ -118,7 +119,7 @@ async function run() {
     await git.add('.', verbose);
     core.endGroup();
 
-    const authorPrs: addressparser.Address = addressparser(author)[0];
+    const authorPrs = addressparser(author)[0];
     await core.group(`Committing changes`, async () => {
       await git.commit(allowEmptyCommit, `${authorPrs.name} <${authorPrs.address}>`, commitMessage);
       await git.showStat().then(output => {

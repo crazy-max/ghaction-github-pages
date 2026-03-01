@@ -1,19 +1,15 @@
 {
   "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "esModuleInterop": true,
-    "target": "es6",
-    "module": "commonjs",
-    "strict": true,
-    "sourceMap": true,
     "newLine": "lf",
     "outDir": "./lib",
     "rootDir": "./src",
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "resolveJsonModule": true,
-    "useUnknownInCatchVariables": false,
+    "useUnknownInCatchVariables": false
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*.ts"]
 }
