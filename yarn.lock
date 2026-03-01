@@ -12,22 +12,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@actions/core@npm:^1.11.1":
-  version: 1.11.1
-  resolution: "@actions/core@npm:1.11.1"
+"@actions/core@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@actions/core@npm:3.0.0"
   dependencies:
-    "@actions/exec": "npm:^1.1.1"
-    "@actions/http-client": "npm:^2.0.1"
-  checksum: 10/94f260e33607cc16567ce4c88014f069cd7da92baaa443b72cff80fdf4f1dcd18192e135df0d51ec29e8b82cfe214218715d482f2a7804efa5095737d1245f38
-  languageName: node
-  linkType: hard
-
-"@actions/exec@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "@actions/exec@npm:1.1.1"
-  dependencies:
-    "@actions/io": "npm:^1.0.1"
-  checksum: 10/c04bd25191e522841c7e17862d70099de8db61278d2b4c744b69ac0197a48f85c75dba548e1c29c695c4cc5363d558846b4dcd3db9013463c18ba8cf36497c6d
+    "@actions/exec": "npm:^3.0.0"
+    "@actions/http-client": "npm:^4.0.0"
+  checksum: 10/fddeebfaf6dfd199d9267a33a97d57e2f7afed7605a54e4a3c35a5a1455a5a8f29f1837bf6ac1711b223a457ba15339189f344c57629c52dbf3a216e96c728d6
   languageName: node
   linkType: hard
 
@@ -40,19 +31,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@actions/http-client@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@actions/http-client@npm:2.0.1"
+"@actions/http-client@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@actions/http-client@npm:4.0.0"
   dependencies:
     tunnel: "npm:^0.0.6"
-  checksum: 10/3ba1aa2822090ffae9eebe8765c091c088b5bebfc285c5d755ced0d8eecf58ef1ff702dfd136b451e5c642e10d3064cb136c5a12d725c589005f5f6ea8b4ffcf
-  languageName: node
-  linkType: hard
-
-"@actions/io@npm:^1.0.1":
-  version: 1.1.2
-  resolution: "@actions/io@npm:1.1.2"
-  checksum: 10/412eb24929a0d73bb168b4ca9929c1e2ee1e4af6e40593e4b75a4aa768ad52b439fb9d570ee614fe22fe4744133836e7d1e0c5c16d73d250592e30166aa505ca
+    undici: "npm:^6.23.0"
+  checksum: 10/05f606174577cae62f563361326cc81ee4c83c468dd75e87ac93f59e8d53369a6479c3fc28a4e8ea1bfbb50c8ed7db941629b5dd9f6e3855fe5f639a2ccdabc5
   languageName: node
   linkType: hard
 
@@ -1061,7 +1046,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "github-pages@workspace:."
   dependencies:
-    "@actions/core": "npm:^1.11.1"
+    "@actions/core": "npm:^3.0.0"
     "@actions/exec": "npm:^3.0.0"
     "@eslint/js": "npm:^9.39.3"
     "@types/addressparser": "npm:^1.0.3"
@@ -2029,6 +2014,13 @@ __metadata:
   version: 7.18.2
   resolution: "undici-types@npm:7.18.2"
   checksum: 10/e61a5918f624d68420c3ca9d301e9f15b61cba6e97be39fe2ce266dd6151e4afe424d679372638826cb506be33952774e0424141200111a9857e464216c009af
+  languageName: node
+  linkType: hard
+
+"undici@npm:^6.23.0":
+  version: 6.23.0
+  resolution: "undici@npm:6.23.0"
+  checksum: 10/56950995e7b628e62c996430445d17995ca9b70f6f2afe760a63da54205660d968bd08f0741b6f4fb008f40aa35c69cce979cd96ced399585d8c897a76a4f1d1
   languageName: node
   linkType: hard
 
