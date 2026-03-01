@@ -31,6 +31,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@actions/exec@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@actions/exec@npm:3.0.0"
+  dependencies:
+    "@actions/io": "npm:^3.0.2"
+  checksum: 10/c1904163e326cbe27f887514b4837e357d46e7a6c5eeda66c0e2efffd2772cb34d8ef0a2a48c65eb0e3b6ec72beb9b049eaba343c9f55978d3f45b09d09d2c54
+  languageName: node
+  linkType: hard
+
 "@actions/http-client@npm:^2.0.1":
   version: 2.0.1
   resolution: "@actions/http-client@npm:2.0.1"
@@ -44,6 +53,13 @@ __metadata:
   version: 1.1.2
   resolution: "@actions/io@npm:1.1.2"
   checksum: 10/412eb24929a0d73bb168b4ca9929c1e2ee1e4af6e40593e4b75a4aa768ad52b439fb9d570ee614fe22fe4744133836e7d1e0c5c16d73d250592e30166aa505ca
+  languageName: node
+  linkType: hard
+
+"@actions/io@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@actions/io@npm:3.0.2"
+  checksum: 10/ef17cb4ec0a2b640d5f4851446ad1c12bf4b2b1cf83741c5eecee4e8f50b3ca3ac9ae4084027dcaa1bf0c016d653dbc0e5fe20daedd39ee5fb6edb671f6e45b5
   languageName: node
   linkType: hard
 
@@ -1046,7 +1062,7 @@ __metadata:
   resolution: "github-pages@workspace:."
   dependencies:
     "@actions/core": "npm:^1.11.1"
-    "@actions/exec": "npm:^1.1.1"
+    "@actions/exec": "npm:^3.0.0"
     "@eslint/js": "npm:^9.39.3"
     "@types/addressparser": "npm:^1.0.3"
     "@types/fs-extra": "npm:^11.0.4"
