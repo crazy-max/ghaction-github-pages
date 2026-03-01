@@ -111,7 +111,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.39.3, @eslint/js@npm:^9.39.2":
+"@eslint/js@npm:9.39.3, @eslint/js@npm:^9.39.3":
   version: 9.39.3
   resolution: "@eslint/js@npm:9.39.3"
   checksum: 10/91a1a1822cfeb2eb8a89aae86be5dfabad0b66b0915946516690a8485ddd80b91f43eee346789313fea1acbb7390a4958119ca7dc9a684a5c4014f12fcb3aaf3
@@ -256,7 +256,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.19.27":
+"@types/node@npm:^20.19.35":
   version: 20.19.35
   resolution: "@types/node@npm:20.19.35"
   dependencies:
@@ -265,7 +265,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^8.50.0":
+"@typescript-eslint/eslint-plugin@npm:^8.56.1":
   version: 8.56.1
   resolution: "@typescript-eslint/eslint-plugin@npm:8.56.1"
   dependencies:
@@ -285,7 +285,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^8.50.0":
+"@typescript-eslint/parser@npm:^8.56.1":
   version: 8.56.1
   resolution: "@typescript-eslint/parser@npm:8.56.1"
   dependencies:
@@ -400,14 +400,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/ncc@npm:^0.38.0":
-  version: 0.38.0
-  resolution: "@vercel/ncc@npm:0.38.0"
+"@vercel/ncc@npm:^0.38.4":
+  version: 0.38.4
+  resolution: "@vercel/ncc@npm:0.38.4"
   dependencies:
     node-gyp: "npm:latest"
   bin:
     ncc: dist/ncc/cli.js
-  checksum: 10/bd92496540eb825fdb65ac2ed338abecba77527aeb9a807f7253f89e085dd00fd5736d9ebb35788fa180f3d24967e2c1e08f34ee08bd9ed5435b50a2a6fd2b81
+  checksum: 10/06561fb3fd46c4db525ea1c9f39b7982e449e9a1995e94d8f5b876c939147c31dba0ca5ffaed4b30ebc6782ffbde531b3f01658996bdaaecb3928df5b1aec155
   languageName: node
   linkType: hard
 
@@ -779,7 +779,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:^5.5.4":
+"eslint-plugin-prettier@npm:^5.5.5":
   version: 5.5.5
   resolution: "eslint-plugin-prettier@npm:5.5.5"
   dependencies:
@@ -830,7 +830,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^9.39.2":
+"eslint@npm:^9.39.3":
   version: 9.39.3
   resolution: "eslint@npm:9.39.3"
   dependencies:
@@ -1047,20 +1047,20 @@ __metadata:
   dependencies:
     "@actions/core": "npm:^1.11.1"
     "@actions/exec": "npm:^1.1.1"
-    "@eslint/js": "npm:^9.39.2"
+    "@eslint/js": "npm:^9.39.3"
     "@types/addressparser": "npm:^1.0.3"
     "@types/fs-extra": "npm:^11.0.4"
-    "@types/node": "npm:^20.19.27"
-    "@typescript-eslint/eslint-plugin": "npm:^8.50.0"
-    "@typescript-eslint/parser": "npm:^8.50.0"
-    "@vercel/ncc": "npm:^0.38.0"
+    "@types/node": "npm:^20.19.35"
+    "@typescript-eslint/eslint-plugin": "npm:^8.56.1"
+    "@typescript-eslint/parser": "npm:^8.56.1"
+    "@vercel/ncc": "npm:^0.38.4"
     addressparser: "npm:^1.0.1"
-    eslint: "npm:^9.39.2"
+    eslint: "npm:^9.39.3"
     eslint-config-prettier: "npm:^10.1.8"
-    eslint-plugin-prettier: "npm:^5.5.4"
+    eslint-plugin-prettier: "npm:^5.5.5"
     fs-extra: "npm:^11.3.0"
     globals: "npm:^17.3.0"
-    prettier: "npm:^3.7.4"
+    prettier: "npm:^3.8.1"
     typescript: "npm:^5.9.3"
   languageName: unknown
   linkType: soft
@@ -1725,7 +1725,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.7.4":
+"prettier@npm:^3.8.1":
   version: 3.8.1
   resolution: "prettier@npm:3.8.1"
   bin:
