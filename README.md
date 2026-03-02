@@ -44,9 +44,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Checkout
-        uses: actions/checkout@v4
-      -
         name: Gen dummy page
         run: |
           mkdir public
@@ -63,7 +60,7 @@ jobs:
           EOL
       -
         name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v4
+        uses: crazy-max/ghaction-github-pages@v5
         with:
           target_branch: gh-pages
           build_dir: public
@@ -87,7 +84,7 @@ action along with this one to sign commits:
           git_commit_gpgsign: true
       -
         name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v4
+        uses: crazy-max/ghaction-github-pages@v5
         with:
           target_branch: gh-pages
           build_dir: public
@@ -109,7 +106,7 @@ deploying:
           pages_threshold: major_outage
       -
         name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v4
+        uses: crazy-max/ghaction-github-pages@v5
         with:
           target_branch: gh-pages
           build_dir: public
