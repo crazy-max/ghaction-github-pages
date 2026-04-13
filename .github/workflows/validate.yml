@@ -30,7 +30,7 @@ jobs:
       -
         name: List targets
         id: generate
-        uses: docker/bake-action/subaction/list-targets@5be5f02ff8819ecd3092ea6b2e6261c31774f2b4 # v6.10.0
+        uses: docker/bake-action/subaction/list-targets@a66e1c87e2eca0503c343edf1d208c716d54b8a8 # v7.1.0
         with:
           target: validate
 
@@ -45,6 +45,6 @@ jobs:
     steps:
       -
         name: Validate
-        uses: docker/bake-action@5be5f02ff8819ecd3092ea6b2e6261c31774f2b4 # v6.10.0
+        uses: docker/bake-action@a66e1c87e2eca0503c343edf1d208c716d54b8a8 # v7.1.0
         with:
           targets: ${{ matrix.target }}
