@@ -64,4 +64,4 @@ inputs:
 
 runs:
   using: 'node24'
-  main: 'dist/index.js'
+  main: 'dist/index.cjs'
