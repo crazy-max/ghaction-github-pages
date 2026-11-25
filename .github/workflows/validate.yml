@@ -16,7 +16,7 @@ on:
 
 jobs:
   prepare:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     outputs:
       matrix: ${{ steps.generate.outputs.matrix }}
     steps:
@@ -31,7 +31,7 @@ jobs:
           target: validate
 
   validate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs:
       - prepare
     strategy:

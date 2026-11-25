@@ -1,0 +1,52 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigestsToSemver",
+    "helpers:githubDigestChangelogs"
+  ],
+  "enabledManagers": [
+    "github-actions",
+    "npm"
+  ],
+  "prHourlyLimit": 0,
+  "minimumReleaseAge": "2 days",
+  "internalChecksFilter": "strict",
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "commitMessageSuffix": ""
+  },
+  // Refresh transitive dependencies whenever Renovate runs.
+  // This can pick up security fixes within the allowed dependency ranges.
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["at any time"]
+  },
+  "labels": ["kind/dependencies", "bot"],
+  "semanticCommits": "disabled",
+  "commitMessagePrefix": "deps{{#if isVulnerabilityAlert}}(security){{/if}}:",
+  // Allow Renovate to replace dist commits created by update-dist on rebase.
+  "gitIgnoredAuthors": ["41898282+github-actions[bot]@users.noreply.github.com"],
+  "packageRules": [
+    {
+      "matchFileNames": [".github/workflows/**"],
+      "commitMessagePrefix": "deps(ci{{#if isVulnerabilityAlert}},security{{/if}}):"
+    },
+    {
+      "matchManagers": ["npm"],
+      "commitMessagePrefix": "deps(npm{{#if isVulnerabilityAlert}},security{{/if}}):",
+      "rangeStrategy": "bump"
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "enabled": false
+    },
+    {
+      "matchUpdateTypes": ["major", "minor", "patch"],
+      "commitMessageAction": "bump",
+      "commitMessageTopic": "{{{depName}}}",
+      "commitMessageExtra": "from {{{replace '^v' '' currentValue}}} to {{{replace '^v' '' newValue}}}"
+    }
+  ]
+}
