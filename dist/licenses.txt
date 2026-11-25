@@ -219,7 +219,7 @@ THE SOFTWARE.
 
 The following npm packages may be included in this product:
 
- - @actions/core@3.0.0
+ - @actions/core@3.0.1
  - @actions/exec@3.0.0
  - @actions/io@3.0.2
 
