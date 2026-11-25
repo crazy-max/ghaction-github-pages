@@ -3,7 +3,7 @@ https://www.npmjs.com/package/generate-license-file
 
 The following npm package may be included in this product:
 
- - fs-extra@11.3.3
+ - fs-extra@11.4.1
 
 This package contains the following license:
 
