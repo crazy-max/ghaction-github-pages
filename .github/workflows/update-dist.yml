@@ -16,17 +16,25 @@ on:
 
 jobs:
   update-dist:
-    if: github.actor == 'dependabot[bot]' && github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == github.event.pull_request.head.repo.full_name
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write # to push to the repository
+    if: github.actor == 'renovate[bot]' && github.event.pull_request.user.login == 'renovate[bot]' && github.repository == github.event.pull_request.head.repo.full_name
+    runs-on: ubuntu-26.04
+    environment: update-dist # secrets are gated by this environment
     steps:
+      -
+        name: GitHub auth token from GitHub App
+        id: app-token
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        with:
+          client-id: ${{ vars.CMAX_GHACTIONS_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.CMAX_GHACTIONS_BOT_PRIVATE_KEY }}
+          permission-contents: write
       -
         name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
       -
         name: Build
         uses: docker/bake-action@6614cfa25eff9a0b2b2697efb0b6159e7680d584 # v7.2.0
@@ -35,11 +43,16 @@ jobs:
           targets: build
       -
         name: Commit and push dist
-        uses: planetscale/ghcommit-action@a6b150b81dca5dd027baa898604418eec9e11465 # v0.2.22
-        with:
-          commit_message: "[dependabot skip] chore: update generated content"
-          repo: ${{ github.repository }}
-          branch: ${{ github.event.pull_request.head.ref }}
-          file_pattern: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "$(git status --porcelain -- dist)" ]; then
+            (
+              set -x
+              git config user.name "github-actions[bot]"
+              git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+              git add dist
+              git commit -m "chore: update generated content"
+              git push
+            )
+          else
+            echo "No changes in dist"
+          fi
